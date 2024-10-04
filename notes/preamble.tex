@@ -1,0 +1,65 @@
+%! TeX program = lualatex
+\documentclass[11pt]{report}
+
+\usepackage{graphicx}
+\graphicspath{ {./figures} }
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\usepackage{titlesec}
+\titleformat{\chapter}
+{\centering\sc\LARGE}{\thechapter.}{1em}{\Huge}
+\titlespacing*{\chapter}{0cm}{0cm}{0.5cm}
+
+\titleformat{\section}
+{\sc}{\thesection}{1em}{\Large}
+
+\titleformat{\subsection}
+{\sc}{\thesubsection}{1em}{\large}
+
+% Figure related
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% Page Geometry
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+
+% Framing
+\usepackage[framemethod=TikZ]{mdframed}
+
+% Theorems
+\usepackage{thmtools}
+\declaretheoremstyle[headfont=\sc, bodyfont=\normalfont, mdframed={ needspace=4\baselineskip, nobreak=false } ]{fullbox}
+\declaretheoremstyle[headfont=\sc, bodyfont=\normalfont, mdframed={ rightline=false, topline=false, bottomline=false, needspace=4\baselineskip, nobreak=false }]{sideline}
+
+\declaretheorem[numberwithin=chapter, style=fullbox, name=Definition]{definition}
+\declaretheorem[sibling=definition, style=fullbox, name=Corollary ]{corollary}
+\declaretheorem[sibling=definition, style=fullbox, name=Lemma ]{lemma}
+\declaretheorem[sibling=definition, style=fullbox, name=Proposition ]{proposition}
+\declaretheorem[sibling=definition, style=fullbox, name=Theorem ]{theorem}
+\declaretheorem[sibling=definition, style=sideline, name=Example ]{example}
+\declaretheorem[sibling=definition, style=sideline, name=Nonexample ]{nonexample}
+\declaretheorem[style=sideline, numbered=no, name=Remark ]{remark}
+\declaretheorem[style=sideline, numbered=no, name=Notation ]{notation}
+
+%Chapter outline env
+\newenvironment{chout}{\begin{center}\it}{\end{center}}
+
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\marginparpush}{0.5cm}
+\setlength{\parindent}{0pt}
+
+%Commands
+\renewcommand{\vec}[1]{\textbf{#1}}
+\newcommand{\defined}[1]{\textit{#1}}
+
+%Operators
+\let\diff\relax
+\DeclareMathOperator{\diff}{\, d\!}
+
+\author{Samuel Ireson}
+

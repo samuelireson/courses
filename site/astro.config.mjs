@@ -12,7 +12,11 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Machine Learning',
-					autogenerate: { directory: 'mlnn' },
+					items: [
+						// Each item here is one entry in the navigation menu.
+						{ label: 'Introduction', slug: 'mlnn/introduction' },
+						{ label: 'Linear Algebra', slug: 'mlnn/linear-algebra' },
+					],
 				},
 			],
 			customCss: [
