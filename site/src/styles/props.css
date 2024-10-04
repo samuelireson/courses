@@ -182,8 +182,3 @@
 		--sl-mobile-toc-height: 0rem;
 	}
 }
-
-/*Prevent additional math rendering in the browser.*/
-.mord {
-	display: none;
-}

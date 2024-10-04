@@ -16,3 +16,9 @@ hello.
 :::danger[Example]
 this is an example.
 :::
+
+$$
+x^2
+$$
+
+This is inline $x^2$ math.
