@@ -22,7 +22,11 @@ open(my $out, '>', $output_file) or die "Cannot open $output_file: $!";
 
 print $out "---
 title: $chapter
----";
+---
+
+import { Aside } from '\@components'
+
+";
 
 while (my $line = <$in>) {
 	# Remove \n from EOL
@@ -35,10 +39,16 @@ while (my $line = <$in>) {
 	# Convert LaTeX section headings to Markdown headers
 	next if $line =~ /\\chapter/;
 	$line =~ s/\\section\{(.+?)\}/## $1/;
-	$line =~ s/\\section\*\{(.+?)\}/## $1/;
 	$line =~ s/\\subsection\{(.+?)\}/### $1/;
-	$line =~ s/\\subsection\*\{(.+?)\}/### $1/;
 
+	# Convert theorem like environments
+	$line =~ s/\\begin\{definition\}/<Aside type='definition' title='Definition' \/>/;
+	$line =~ s/\\begin\{(theorem|lemma|proposition|corollary)\}/<Aside type='result' title='\u$1' \/>/;
+	$line =~ s/\\begin\{(example|nonexample)\}/<Aside type='example' title='\u$1' \/>/;
+	$line =~ s/\\begin\{remark\}/<Aside type='comment' title='Remark' \/>/;
+	$line =~ s/\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|remark)\}/<\/Aside>/;
+
+	# Change accent
 	$line =~ s/\\textbf\{(.+?)\}/**$1**/g;
 	$line =~ s/\\textit\{(.+?)\}/*$1*/g;
 
