@@ -1,5 +1,0 @@
----
-title: Home
----
-
-Courses homepage.

@@ -1,0 +1,63 @@
+---
+const asideVariants = ['comment', 'definition', 'result', 'example'] as const;
+
+interface Props {
+	type: (typeof asideVariants)[number];
+	title: string;
+}
+
+let { type, title } = Astro.props;
+---
+
+<aside aria-label={title} class={`starlight-aside starlight-aside--${type}`}>
+	<p class="starlight-aside__title" aria-hidden="true">{title}</p>
+	<section class="starlight-aside__content">
+		<slot />
+	</section>
+</aside>
+
+<style>
+.starlight-aside {
+	padding: 1rem;
+	border-inline-start: 0.25rem solid var(--sl-color-asides-border);
+	color: var(--sl-color-white);
+}
+.starlight-aside--comment {
+	--sl-color-asides-text-accent: var(--sl-color-orange-high);
+	--sl-color-asides-border: var(--sl-color-orange);
+	background-color: var(--sl-color-orange-low);
+}
+.starlight-aside--definition {
+	--sl-color-asides-text-accent: var(--sl-color-blue-high);
+	--sl-color-asides-border: var(--sl-color-blue);
+	background-color: var(--sl-color-blue-low);
+}
+.starlight-aside--result {
+	--sl-color-asides-text-accent: var(--sl-color-purple-high);
+	--sl-color-asides-border: var(--sl-color-purple);
+	background-color: var(--sl-color-purple-low);
+}
+.starlight-aside--example {
+	--sl-color-asides-text-accent: var(--sl-color-red-high);
+	--sl-color-asides-border: var(--sl-color-red);
+	background-color: var(--sl-color-red-low);
+}
+
+.starlight-aside__title {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	font-size: var(--sl-text-h5);
+	font-weight: 600;
+	line-height: var(--sl-line-height-headings);
+	color: var(--sl-color-asides-text-accent);
+}
+
+.starlight-aside__title + .starlight-aside__content {
+	margin-top: 0.5rem;
+}
+
+.starlight-aside__content a {
+	color: var(--sl-color-asides-text-accent);
+}
+</style>
