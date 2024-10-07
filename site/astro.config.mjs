@@ -15,6 +15,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Introduction', slug: 'mlnn/introduction' },
 						{ label: 'Linear Algebra', slug: 'mlnn/linear-algebra' },
+						{ label: 'Statistics', slug: 'mlnn/statistics' },
 					],
 				},
 			],
