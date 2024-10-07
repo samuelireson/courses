@@ -31,3 +31,8 @@
 .group-label, .site-title, h1, h2, h3, h4, h5 {
 	font-family: 'Orbitron';
 }
+
+main div.sl-container {
+	margin-inline: auto;
+	max-width: 1080px;
+}
