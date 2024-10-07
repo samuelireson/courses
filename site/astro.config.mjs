@@ -13,7 +13,6 @@ export default defineConfig({
 				{
 					label: 'Machine Learning',
 					items: [
-						// Each item here is one entry in the navigation menu.
 						{ label: 'Introduction', slug: 'mlnn/introduction' },
 						{ label: 'Linear Algebra', slug: 'mlnn/linear-algebra' },
 					],
@@ -21,7 +20,8 @@ export default defineConfig({
 			],
 			customCss: [
 				'./node_modules/katex/dist/katex.min.css',
-				'./src/styles/props.css'
+				'./src/styles/custom.css',
+				'./src/fonts/font-face.css'
 			]
 		}),
 	],
