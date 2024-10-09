@@ -12,6 +12,9 @@ my ($input_file) = @ARGV;
 my $output_file = $input_file;
 $output_file =~ s/\.tex/.mdx/;
 
+my $course = $input_file;
+$course =~ s/notes\/(\w+?)\/.*$/$1/;
+
 my $chapter = $input_file;
 $chapter =~ s/notes\/\w*?\/chapters\/(.*?).tex/\u$1/;
 $chapter =~ s/-/ /g;
@@ -24,7 +27,8 @@ print $out "---
 title: $chapter
 ---
 
-import { Aside } from '\@components'
+import { Aside } from '\@components';
+import { Tabs, TabItem } from '\@astrojs/starlight/components';
 
 ";
 
@@ -33,13 +37,16 @@ while (my $line = <$in>) {
 	chomp $line;
 
 	# Convert chout env
-	$line =~ s/\\begin\{chout\}/<div style="text-align: center">/;
-	$line =~ s/\\end\{chout\}/<\/div>/;
+	$line =~ s/\\begin\{chout\}/<div style="text-align: center"><em>/;
+	$line =~ s/\\end\{chout\}/<\/em><\/div>/;
 
 	# Convert LaTeX section headings to Markdown headers
 	next if $line =~ /\\chapter/;
 	$line =~ s/\\section\{(.+?)\}/## $1/;
 	$line =~ s/\\subsection\{(.+?)\}/### $1/;
+	$line =~ s/\\basic/:badge[Basic]{variant=success}/;
+	$line =~ s/\\intermediate/:badge[Intermediate]{variant=warning}/;
+	$line =~ s/\\challenging/:badge[Challenging]{variant=danger}/;
 
 	# Convert theorem like environments
 	$line =~ s/\\begin\{definition\}/<Aside type='definition' title='Definition' \/>/;
@@ -48,7 +55,14 @@ while (my $line = <$in>) {
 	$line =~ s/\\begin\{remark\}/<Aside type='comment' title='Remark' \/>/;
 	$line =~ s/\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|remark)\}/<\/Aside>/;
 
-	# Change accent
+	# Convert exercises
+	$line =~ s/\\begin\{exercise\}/<Tabs>/;
+	$line =~ s/\\end\{exercise\}/<\/Tabs>/;
+	$line =~ s/\\begin\{problem\}/<TabItem label="Problem">/;
+	$line =~ s/\\begin\{solution\}/<TabItem label="Solution">/;
+	$line =~ s/\\end\{(problem|solution)\}/<\/TabItem>/;
+
+	# Change accent text
 	$line =~ s/\\textbf\{(.+?)\}/**$1**/g;
 	$line =~ s/\\textit\{(.+?)\}/*$1*/g;
 
@@ -71,3 +85,7 @@ close($in);
 close($out);
 
 print "Conversion complete!\n";
+
+system "mv $output_file ./site/src/content/docs/$course/";
+
+print "File moved!\n";

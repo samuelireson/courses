@@ -45,6 +45,16 @@
 \declaretheorem[sibling=definition, style=sideline, name=Nonexample ]{nonexample}
 \declaretheorem[style=sideline, numbered=no, name=Remark ]{remark}
 \declaretheorem[style=sideline, numbered=no, name=Notation ]{notation}
+\declaretheorem[numberwithin=chapter, style=fullbox, name=Problem]{problem}
+\declaretheorem[numberwithin=chapter, style=sideline, name=Solution]{solution}
+
+%Exercise environment to be picked up by converter.
+\newenvironment{exercise}{}{}
+
+%Content classification macros.
+\newcommand{\basic}{(Basic)}
+\newcommand{\intermediate}{(Intermediate)}
+\newcommand{\challenging}{(Challenging)}
 
 %Chapter outline env
 \newenvironment{chout}{\begin{center}\it}{\end{center}}
