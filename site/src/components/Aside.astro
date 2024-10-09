@@ -1,5 +1,8 @@
 ---
+import { Icon } from '@astrojs/starlight/components';
+
 const asideVariants = ['comment', 'definition', 'result', 'example'] as const;
+const icons = { comment: 'comment', definition: 'pencil', result: 'information', example: 'magnifier' } as const;
 
 interface Props {
 	type: (typeof asideVariants)[number];
@@ -10,7 +13,9 @@ let { type, title } = Astro.props;
 ---
 
 <aside aria-label={title} class={`starlight-aside starlight-aside--${type}`}>
-	<p class="starlight-aside__title" aria-hidden="true">{title}</p>
+	<p class="starlight-aside__title" aria-hidden="true">
+		<Icon name={icons[type]} class="starlight-aside__icon" />{title}
+	</p>
 	<section class="starlight-aside__content">
 		<slot />
 	</section>
@@ -51,6 +56,12 @@ let { type, title } = Astro.props;
 	font-weight: 600;
 	line-height: var(--sl-line-height-headings);
 	color: var(--sl-color-asides-text-accent);
+}
+
+.starlight-aside__icon {
+	font-size: 1.333em;
+	width: 1em;
+	height: 1em;
 }
 
 .starlight-aside__title + .starlight-aside__content {
