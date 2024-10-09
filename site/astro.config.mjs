@@ -3,11 +3,13 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
+import starlightHeadingBadgesPlugin from 'starlight-heading-badges';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
 		starlight({
+			plugins: [starlightHeadingBadgesPlugin()],
 			title: 'Courses',
 			sidebar: [
 				{

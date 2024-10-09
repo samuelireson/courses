@@ -28,7 +28,7 @@
 	--sl-color-black: #ffffff;
 }
 
-.group-label, .site-title, h1, h2, h3, h4, h5 {
+.starlight-aside__title, .group-label, .site-title, h1, h2, h3, h4, h5 {
 	font-family: 'Orbitron';
 }
 
