@@ -20,7 +20,7 @@ export default defineConfig({
 				},
 			],
 			customCss: [
-				'./node_modules/katex/dist/katex.min.css',
+				'./node_modules/katex/dist/katex.css',
 				'./src/styles/custom.css',
 				'./src/fonts/font-face.css'
 			]

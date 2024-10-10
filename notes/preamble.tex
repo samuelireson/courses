@@ -48,26 +48,26 @@
 \declaretheorem[numberwithin=chapter, style=fullbox, name=Problem]{problem}
 \declaretheorem[numberwithin=chapter, style=sideline, name=Solution]{solution}
 
-%Exercise environment to be picked up by converter.
+% Exercise environment to be picked up by converter.
 \newenvironment{exercise}{}{}
 
-%Content classification macros.
+% Content classification macros.
 \newcommand{\basic}{(Basic)}
 \newcommand{\intermediate}{(Intermediate)}
 \newcommand{\challenging}{(Challenging)}
 
-%Chapter outline env
+% Chapter outline env
 \newenvironment{chout}{\begin{center}\it}{\end{center}}
 
 \setlength{\parskip}{0.3\baselineskip}
 \setlength{\marginparpush}{0.5cm}
 \setlength{\parindent}{0pt}
 
-%Commands
+% Commands
 \renewcommand{\vec}[1]{\textbf{#1}}
 \newcommand{\defined}[1]{\textit{#1}}
 
-%Operators
+% Operators
 \let\diff\relax
 \DeclareMathOperator{\diff}{\, d\!}
 

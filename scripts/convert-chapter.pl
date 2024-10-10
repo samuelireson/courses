@@ -62,6 +62,10 @@ while (my $line = <$in>) {
 	$line =~ s/\\begin\{solution\}/<TabItem label="Solution">/;
 	$line =~ s/\\end\{(problem|solution)\}/<\/TabItem>/;
 
+	# Convert math environments
+	$line =~ s/(\\begin\{align\*\})/\$\$\n$1/;
+	$line =~ s/(\\end\{align\*\})/$1\n\$\$/;
+
 	# Change accent text
 	$line =~ s/\\textbf\{(.+?)\}/**$1**/g;
 	$line =~ s/\\textit\{(.+?)\}/*$1*/g;
