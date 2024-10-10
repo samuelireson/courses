@@ -1,10 +1,25 @@
 ---
-title: Home
+title: Welcome!
 ---
 
 import { Aside } from '../../components';
+import { Badge, Steps } from '@astrojs/starlight/components';
 
-This is the central storage point for all the courses.
+Welcome to the courses homepage! Here you will find mathematics courses for concepts which are regularly encountered without a full mathematical introduction.
+
+## Content structure
+
+The courses will hopefully be fairly consistent in their structure. You should be able to either download a `.pdf` version of the content, or read it on this website. Both formats will contain near-identical content, although the `pdf` is admittedly less colourful.
+
+### Content tagging
+
+In order to cater to all audiences, the content in the courses will be tagged based on it's difficulty. Content which is aimed at an inexperienced audience will be marked by <Badge text='Basic' variant='success' />, that more tailored to a reader with some mathematical experience by <Badge text='Intermediate' variant='caution' />, and that suitable for the well mathematically versed by <Badge text='Challenging' variant='danger' />.
+
+The place where this is arguably most important is in the end of chapter/section exercises. Of course, in order to learn, you must be challenged - don't be put off by our labelling; they act as a guide.
+
+### Content organisation
+
+It is very common in mathematically inclined courses to follow a definition-lemma-theorem-corollary format. We will do the same, but to a lesser extent, placing more weight on examples, and less on proofs. This is especially so in the web version of the notes, where proofs are omitted entirely.
 
 <Aside type='definition' title='Definition'>
 Definitions will be shown like this.
@@ -21,3 +36,25 @@ Examples will be shown like this.
 <Aside type='comment' title='Remark'>
 Remarks will be shown like this.
 </Aside>
+
+## Recommended learning approach
+
+As usual, this is up to you. Although there are some tried and tested approaches to learning mathematics. A step by step approach might look something like.
+
+<Steps>
+
+1. Watch the live sessions, or the video recordings - watching live is best, since this will provide the best opportunity to ask any questions you have about the content.
+
+2. Read through the notes. Often times, the live sessions may miss some details which end up parting mental mist. The only way you will consistently find these details is by reading through the content in your own time.
+
+3. Try the exercises. This is by far the most important step. A lot of the problems are framed in an open ended manner, meaning you have freedom to solve them either purely mathematically - pen and paper, or programmatically - calling relevent python libraries, but employing the same logic and critical thinking.
+
+	This is of course not the case for all problems - the solutions provided will focus on the mathematical approach, but if you find yourself with an elegant programmatic solution, let us know! We can add it to the course content, and everyone can benefit.
+
+4. Repeat! If you focused on the content tagged as <Badge text='Basic' variant='success' />, try the more challenging content next!
+
+</Steps>
+
+## Contribution
+
+If you think there's a gap in the courses we offer, and want to plug that gap with your own knowledge and expertise, send us a message.
