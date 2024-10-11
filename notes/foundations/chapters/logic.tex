@@ -1,0 +1,60 @@
+\chapter{Logic}
+
+The field of logic is at the heart of mathematics, and essentially forms the language with which we can make mathematical statements. Logic is a deep, and well-explored area -- we will explore only the beginnings of the subject.
+
+\section{Propositional logic}
+Propositional logic is concerned with the relationships and connections between statements which are either true or false. If we have two statements $ A $ and $ B $, we will consider how the respective truth of each of these statements influence the truth of statements such as,
+\begin{align*}
+	A \text{ and } B, \quad A \text{ or } B, \quad \text{ not } A, \quad \text{ if } A \text{ then } B
+\end{align*}
+
+\begin{example}
+	Suppose we have statement $ A $ as `I wake up late', and statement $ B $ as `I miss my train'. Think about how these statements are related to eachother. For instance, we could consider,
+	\begin{align*}
+		\text{ if } A \text{ then } B
+	\end{align*}
+	or, substituting for our plain english versions,
+	\begin{align*}
+		\text{ if I wake up late then I miss my train }
+	\end{align*}
+	which seems to make sense.
+
+	It is also interesting to consider,
+	\begin{align*}
+		\text{ if } B \text{ then } A
+	\end{align*}
+	or,
+	\begin{align*}
+		\text{ if I miss my train then I woke up late }
+	\end{align*}
+	making a small alteration in the statement to account for the english past tense. Is this statement true?
+\end{example}
+
+We will be concerned mostly with three relationships between statements, and it is useful to map out these relationships in what we call a truth table. Throughout the following subsections, we will be considering two statements $ A $ and $ B $. In order to keep the tables readable, we will now label true by $ T $, and false by $ F $.
+
+\subsection{Conjunction}
+We can, as seen, create a compound statement from statements $ A $ and $ B $ as,
+\begin{align*}
+	A \text{ and } B
+\end{align*}
+which is a process we sometimes refer to as conjunction.
+
+\begin{notation}
+	It is common in logic to denote the operation of statement conjuction by the operator $ \land $, i.e., $ A \land B $, although we will do fine with `and'.
+\end{notation}
+
+\begin{center}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		$ A $ & $ B $ & $ A $ and $ B $ \\
+		\hline
+		T     & T     & T               \\
+		T     & F     & F               \\
+		F     & T     & F               \\
+		F     & F     & F               \\
+		\hline
+	\end{tabular}
+\end{center}
+
+
+

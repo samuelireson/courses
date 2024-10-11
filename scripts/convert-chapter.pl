@@ -19,6 +19,9 @@ my $chapter = $input_file;
 $chapter =~ s/notes\/\w*?\/chapters\/(.*?).tex/\u$1/;
 $chapter =~ s/-/ /g;
 
+my $inside_table = 0;
+my $cols;
+
 # Open input and output files
 open(my $in, '<', $input_file) or die "Cannot open $input_file: $!";
 open(my $out, '>', $output_file) or die "Cannot open $output_file: $!";
@@ -49,11 +52,11 @@ while (my $line = <$in>) {
 	$line =~ s/\\challenging/:badge[Challenging]{variant=danger}/;
 
 	# Convert theorem like environments
-	$line =~ s/\\begin\{definition\}/<Aside type='definition' title='Definition' \/>/;
-	$line =~ s/\\begin\{(theorem|lemma|proposition|corollary)\}/<Aside type='result' title='\u$1' \/>/;
-	$line =~ s/\\begin\{(example|nonexample)\}/<Aside type='example' title='\u$1' \/>/;
-	$line =~ s/\\begin\{remark\}/<Aside type='comment' title='Remark' \/>/;
-	$line =~ s/\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|remark)\}/<\/Aside>/;
+	$line =~ s/\\begin\{definition\}/<Aside type='definition' title='Definition' >/;
+	$line =~ s/\\begin\{(theorem|lemma|proposition|corollary)\}/<Aside type='result' title='\u$1' >/;
+	$line =~ s/\\begin\{(example|nonexample)\}/<Aside type='example' title='\u$1' >/;
+	$line =~ s/\\begin\{(notation|remark)\}/<Aside type='comment' title='\u$1' >/;
+	$line =~ s/\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|notation|remark)\}/<\/Aside>/;
 
 	# Convert exercises
 	$line =~ s/\\begin\{exercise\}/<Tabs>/;
@@ -70,6 +73,30 @@ while (my $line = <$in>) {
 	$line =~ s/\\textbf\{(.+?)\}/**$1**/g;
 	$line =~ s/\\textit\{(.+?)\}/*$1*/g;
 
+	# Convert tables
+	$line =~ s/\\begin\{center\}/<center>/;
+	$line =~ s/\\end\{center\}/<\/center>/;
+	if ($line =~ /\\begin\{tabular\}\{(?<cols>.*?)\}/) {
+		$cols = $+{cols};
+		$cols =~ s/(c|l|r)/---/g;
+		$cols =~ s/^/\n/;
+		$inside_table = 1;
+		next;
+	}
+	if ($inside_table) {
+		$line =~ s/\&/|/g;
+		$line =~ s/\\\\/$cols/;
+		next if $line =~ /\\hline/;
+	}
+	if ($line =~ /\\end\{tabular\}/) {
+		$inside_table = 0;
+		next;
+	}
+
+
+	# Convert LaTeX quotations
+	$line =~ s/`(.*?)'/'$1'/g;
+
 	# Remove LaTeX comment lines (lines starting with %)
 	next if $line =~ /^\s*%/;
 
@@ -82,6 +109,7 @@ while (my $line = <$in>) {
 	$line =~ s/\\defined\{(.*?)\}/**$1**/gs;
 
 	print $out "$line\n";
+	$cols = '';
 }
 
 # Close the files

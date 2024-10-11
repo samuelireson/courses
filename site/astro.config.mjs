@@ -13,6 +13,15 @@ export default defineConfig({
 			title: 'Courses',
 			sidebar: [
 				{
+					label: 'Foundations',
+					items: [
+						{ label: 'Introduction', slug: 'foundations/introduction' },
+						{ label: 'Logic', slug: 'foundations/logic' },
+						{ label: 'Set Theory', slug: 'foundations/set-theory' },
+						{ label: 'Real Analysis', slug: 'foundations/real-analysis' },
+					],
+				},
+				{
 					label: 'Machine Learning',
 					items: [
 						{ label: 'Introduction', slug: 'mlnn/introduction' },
