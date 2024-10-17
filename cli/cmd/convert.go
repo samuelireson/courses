@@ -39,12 +39,16 @@ var basicRegexPatterns = []regexPattern{
 	{regexp.MustCompile(`\\begin\{(notation|remark)\}`), "<Aside type='result' title='" + strings.ToUpper("$1") + "' >"},
 	{regexp.MustCompile(`\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|notation|remark)\}`), "</Aside>"},
 
+	// maths environments
+	{regexp.MustCompile(`(\\begin\{align\*\})`), "$$$$\n$1"},
+	{regexp.MustCompile(`(\\end\{align\*\})`), "$1\n$$$$"},
+
 	// exercises
 	{regexp.MustCompile(`\\begin\{exercise\}`), "<Tabs>"},
 	{regexp.MustCompile(`\\end\{exercise\}`), "</Tabs>"},
 	{regexp.MustCompile(`\\begin\{problem\}`), "<TabItem label='Problem'>"},
 	{regexp.MustCompile(`\\begin\{solution\}`), "<TabItem label='Solution'>"},
-	{regexp.MustCompile(`\\end\{(problem|solution)\}`), "TabItem>"},
+	{regexp.MustCompile(`\\end\{(problem|solution)\}`), "</TabItem>"},
 
 	// badges
 	{regexp.MustCompile(`\\basic`), ":badge[Basic]{variant=success}"},
@@ -69,7 +73,7 @@ func generateOutputFilePath(input string) string {
 	inputDir, inputFileName := filepath.Split(input)
 	baseName := strings.TrimSuffix(inputFileName, filepath.Ext(inputFileName))
 	outputFileName := baseName + ".mdx"
-	outputDir := strings.Replace(inputDir, "notes", "site/src/content", 1)
+	outputDir := strings.Replace(inputDir, "notes", "site/src/content/docs", 1)
 	outputDir = strings.Replace(outputDir, "chapters/", "", 1)
 	outputPath := filepath.Join(outputDir, outputFileName)
 	os.MkdirAll(outputDir, os.ModePerm)
