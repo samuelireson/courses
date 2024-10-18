@@ -4,65 +4,16 @@ Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/cobra"
 )
-
-type regexPattern struct {
-	captureGroup *regexp.Regexp
-	replacement  string
-}
-
-var header = `---
-title: $1
----
-import { Aside } from '\@components';
-import { Tabs, TabItem } from '\@astrojs/starlight/components';
-`
-
-var basicRegexPatterns = []regexPattern{
-	// document organisation
-	{regexp.MustCompile(`\\begin\{chout\}`), "<div style='text-align: center'><em>"},
-	{regexp.MustCompile(`\\end\{chout\}`), "</em></div>"},
-	{regexp.MustCompile(`\\chapter\{(.*?)\}`), header},
-	{regexp.MustCompile(`\\section\{(.*?)\}`), "## $1"},
-	{regexp.MustCompile(`\\subsection\{(.*?)\}`), "### $1"},
-
-	// theorem environments
-	{regexp.MustCompile(`\\begin\{definition\}`), "<Aside type='definition' title='definition' >"},
-	{regexp.MustCompile(`\\begin\{(theorem|lemma|proposition|corollary)\}`), "<Aside type='result' title='$1' >"},
-	{regexp.MustCompile(`\\begin\{(example|nonexample)\}`), "<Aside type='example' title='$1' >"},
-	{regexp.MustCompile(`\\begin\{(notation|remark)\}`), "<Aside type='comment' title='$1' >"},
-	{regexp.MustCompile(`\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|notation|remark)\}`), "</Aside>"},
-
-	// maths environments
-	{regexp.MustCompile(`(\\begin\{align\*\})`), "$$$$\n$1"},
-	{regexp.MustCompile(`(\\end\{align\*\})`), "$1\n$$$$"},
-
-	// exercises
-	{regexp.MustCompile(`\\begin\{exercise\}`), "<Tabs>"},
-	{regexp.MustCompile(`\\end\{exercise\}`), "</Tabs>"},
-	{regexp.MustCompile(`\\begin\{problem\}`), "<TabItem label='Problem'>"},
-	{regexp.MustCompile(`\\begin\{solution\}`), "<TabItem label='Solution'>"},
-	{regexp.MustCompile(`\\end\{(problem|solution)\}`), "</TabItem>"},
-
-	// badges
-	{regexp.MustCompile(`\\basic`), ":badge[Basic]{variant=success}"},
-	{regexp.MustCompile(`\\intermediate`), ":badge[Intermediate]{variant=warning}"},
-	{regexp.MustCompile(`\\challenging`), ":badge[Challenging]{variant=danger}"},
-
-	// fonts and ligatures
-	{regexp.MustCompile(`\\textbf\{(.*?)\}`), "* $1 *"},
-	{regexp.MustCompile(`\\textit\{(.*?)\}`), "** $1 **"},
-	{regexp.MustCompile("`"), "'"},
-}
 
 func generateOutputFilePath(input string) string {
 	inputDir, inputFileName := filepath.Split(input)
@@ -76,6 +27,10 @@ func generateOutputFilePath(input string) string {
 }
 
 func convertTeXtoMDX(content []byte) []byte {
+	for _, element := range stringPatterns {
+		content = bytes.ReplaceAll(content, []byte(element.old), []byte(element.new))
+	}
+
 	for _, element := range basicRegexPatterns {
 		content = element.captureGroup.ReplaceAll(content, []byte(element.replacement))
 	}
