@@ -16,14 +16,18 @@ import (
 )
 
 func generateOutputFilePath(input string) string {
-	inputDir, inputFileName := filepath.Split(input)
-	baseName := strings.TrimSuffix(inputFileName, filepath.Ext(inputFileName))
-	outputFileName := baseName + ".mdx"
-	outputDir := strings.Replace(inputDir, "notes", "site/src/content/docs", 1)
-	outputDir = strings.Replace(outputDir, "chapters/", "", 1)
-	outputPath := filepath.Join(outputDir, outputFileName)
-	os.MkdirAll(outputDir, os.ModePerm)
-	return outputPath
+	if customOutputPath != "" {
+		return customOutputPath
+	} else {
+		inputDir, inputFileName := filepath.Split(input)
+		baseName := strings.TrimSuffix(inputFileName, filepath.Ext(inputFileName))
+		outputFileName := baseName + ".mdx"
+		outputDir := strings.Replace(inputDir, "notes", "site/src/content/docs", 1)
+		outputDir = strings.Replace(outputDir, "chapters/", "", 1)
+		outputPath := filepath.Join(outputDir, outputFileName)
+		os.MkdirAll(outputDir, os.ModePerm)
+		return outputPath
+	}
 }
 
 func convertTeXtoMDX(content []byte) []byte {
@@ -123,6 +127,7 @@ var convertCmd = &cobra.Command{
 var chapter bool
 var course bool
 var watch bool
+var customOutputPath string
 
 func init() {
 	rootCmd.AddCommand(convertCmd)
@@ -134,4 +139,6 @@ func init() {
 
 	convertCmd.Flags().BoolVarP(&watch, "watch", "w", false, "Watch and continuously convert")
 	convertCmd.MarkFlagsMutuallyExclusive("chapter", "watch") // Watching specific files is not advised.
+
+	convertCmd.Flags().StringVarP(&customOutputPath, "output", "o", "", "Specify a custom output path")
 }

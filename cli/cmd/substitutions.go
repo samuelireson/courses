@@ -31,21 +31,11 @@ var basicRegexPatterns = []regexPattern{
 	{regexp.MustCompile(`\\subsection\{(.*?)\}`), "### $1"},
 
 	// theorem environments
-	{regexp.MustCompile(`\\begin\{definition\}`), "<Aside type='definition' title='definition' >"},
-	{regexp.MustCompile(`\\begin\{(theorem|lemma|proposition|corollary)\}`), "<Aside type='result' title='$1' >"},
-	{regexp.MustCompile(`\\begin\{(example|nonexample)\}`), "<Aside type='example' title='$1' >"},
-	{regexp.MustCompile(`\\begin\{(notation|remark)\}`), "<Aside type='comment' title='$1' >"},
 	{regexp.MustCompile(`\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|notation|remark)\}`), "</Aside>"},
-
-	// badges
-	{regexp.MustCompile(`\\basic`), ":badge[Basic]{variant=success}"},
-	{regexp.MustCompile(`\\intermediate`), ":badge[Intermediate]{variant=warning}"},
-	{regexp.MustCompile(`\\challenging`), ":badge[Challenging]{variant=danger}"},
 
 	// fonts and ligatures
 	{regexp.MustCompile(`\\textbf\{(.*?)\}`), "* $1 *"},
 	{regexp.MustCompile(`\\textit\{(.*?)\}`), "** $1 **"},
-	{regexp.MustCompile("`"), "'"},
 }
 
 var stringPatterns = []stringPattern{
@@ -54,8 +44,8 @@ var stringPatterns = []stringPattern{
 	{"\\end{chout}", "</em></div>"},
 
 	// maths environments
-	{"\\begin{align*})", "$$$$\n\\begin{align*}"},
-	{"\\end{align*}", "\\end{align*}\n$$$$"},
+	{"\\begin{align*}", "$$\n\\begin{align*}"},
+	{"\\end{align*}", "\\end{align*}\n$$"},
 
 	// exercises
 	{"\\begin{exercise}", "<Tabs>"},
@@ -64,4 +54,23 @@ var stringPatterns = []stringPattern{
 	{"\\begin{solution}", "<TabItem label='Solution'>"},
 	{"\\end{problem}", "</TabItem>"},
 	{"\\end{solution}", "</TabItem>"},
+
+	// theorem environments
+	{"\\begin{corollary}", "<Aside type='result' title='Corollary' >"},
+	{"\\begin{definition}", "<Aside type='definition' title='Definition' >"},
+	{"\\begin{example}", "<Aside type='example' title='Example' >"},
+	{"\\begin{lemma}", "<Aside type='result' title='Lemma' >"},
+	{"\\begin{nonexample}", "<Aside type='example' title='Nonexample' >"},
+	{"\\begin{notation}", "<Aside type='comment' title='Notation' >"},
+	{"\\begin{proposition}", "<Aside type='result' title='Proposition' >"},
+	{"\\begin{remark}", "<Aside type='comment' title='Remark' >"},
+	{"\\begin{theorem}", "<Aside type='result' title='Theorem' >"},
+
+	// badges
+	{"\\basic", ":badge[Basic]{variant=success}"},
+	{"\\intermediate", ":badge[Intermediate]{variant=warning}"},
+	{"\\challenging", ":badge[Challenging]{variant=danger}"},
+
+	// fonts and ligatures
+	{"`", "'"},
 }
