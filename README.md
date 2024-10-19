@@ -10,6 +10,6 @@ The folder containing the necessary code for the web view of the course notes.
 
 The folder containing the course notes which can be compiled to `.pdf` format.
 
-## scripts
+## cli
 
-The folder containing the necessary scripts to convert a document in the `notes` directory, to a web page in the `site` directory.
+The folder containing the courses cli. See the [README](cli/README.md) for more information.
