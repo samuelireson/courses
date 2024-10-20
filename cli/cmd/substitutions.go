@@ -4,6 +4,7 @@ Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 package cmd
 
 import (
+	"bytes"
 	"regexp"
 )
 
@@ -73,4 +74,15 @@ var stringPatterns = []stringPattern{
 
 	// fonts and ligatures
 	{"`", "'"},
+}
+
+func convertTeXToMDX(content []byte) []byte {
+	for _, element := range stringPatterns {
+		content = bytes.ReplaceAll(content, []byte(element.old), []byte(element.new))
+	}
+
+	for _, element := range basicRegexPatterns {
+		content = element.captureGroup.ReplaceAll(content, []byte(element.replacement))
+	}
+	return content
 }
