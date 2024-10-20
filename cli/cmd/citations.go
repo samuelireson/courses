@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -20,6 +20,14 @@ type bibliography map[string]bibliographyItem
 
 var keyMatch = regexp.MustCompile(`{[a-z]*,`)
 var valueMatch = regexp.MustCompile(`{.*}`)
+
+func cleanMatch(rawMatch string) string {
+	cleanMatch := strings.TrimPrefix(rawMatch, "{")
+	cleanMatch = strings.TrimSuffix(cleanMatch, "}")
+	cleanMatch = strings.TrimSuffix(cleanMatch, ",")
+
+	return cleanMatch
+}
 
 func parseBibliography(bibPath string) bibliography {
 	var bib bibliography
@@ -40,43 +48,49 @@ func parseBibliography(bibPath string) bibliography {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		if strings.Contains(line, "@") {
-			currentKey = keyMatch.FindString(line)
-			currentKey = strings.TrimPrefix(currentKey, "{")
-			currentKey = strings.TrimSuffix(currentKey, ",")
-		} else if strings.Contains(line, "author") {
-			currentAuthor = valueMatch.FindString(line)
-			currentAuthor = strings.TrimPrefix(currentAuthor, "{")
-			currentAuthor = strings.TrimSuffix(currentAuthor, "}")
-		} else if strings.Contains(line, "title") {
-			currentTitle = valueMatch.FindString(line)
-			currentTitle = strings.TrimPrefix(currentTitle, "{")
-			currentTitle = strings.TrimSuffix(currentTitle, "}")
+		switch {
+		case strings.Contains(line, "@"):
+			currentKey = cleanMatch(keyMatch.FindString(line))
+		case strings.Contains(line, "author"):
+			currentAuthor = cleanMatch(valueMatch.FindString(line))
+		case strings.Contains(line, "title"):
+			currentTitle = cleanMatch(valueMatch.FindString(line))
 		}
 
 		bib[currentKey] = bibliographyItem{
 			author: currentAuthor,
 			title:  currentTitle,
 		}
-
 	}
 
-	for key, item := range bib {
-		fmt.Printf("Key: %s -> Author: %s, Title: %s\n", key, item.author, item.title)
+	if err := scanner.Err(); err != nil {
+		panic(err)
 	}
 
 	return bib
 }
 
-func convertCitationsToFootnotes(bib bibliography) {
+var citationMatch = regexp.MustCompile(`\\cite\{(.*?)\}`)
 
+func convertCitationsToFootnotes(bib bibliography, content string) string {
+
+	citations := citationMatch.FindAllString(content, -1)
+	var citationContent []string
+	var citationContentItem string
+
+	for _, citation := range citations {
+		citation = strings.TrimPrefix(citation, "\\cite{")
+		citation = strings.TrimSuffix(citation, "}")
+		citationBibItem := bib[citation]
+
+		citationContentItem = "[^" + citation + "]: <em> " + citationBibItem.title + " </em> -- " + citationBibItem.author
+		citationContent = append(citationContent, citationContentItem)
+		slices.Sort(citationContent)
+		citationContent = slices.Compact(citationContent)
+	}
+
+	content = citationMatch.ReplaceAllString(content, string("[^$1]"))
+	content += strings.Join(citationContent, "\n")
+
+	return content
 }
-
-// @book{donaldson,
-//   author        = {Donaldson, Simon},
-//   publisher     = {Oxford University Press},
-//   series        = {Oxford Graduate Texts in Mathematics},
-//   title         = {Riemann Surfaces},
-//   volume        = {22},
-//   year          = {2011}
-// }

@@ -4,8 +4,8 @@ Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 package cmd
 
 import (
-	"bytes"
 	"regexp"
+	"strings"
 )
 
 type regexPattern struct {
@@ -76,13 +76,13 @@ var stringPatterns = []stringPattern{
 	{"`", "'"},
 }
 
-func convertTeXToMDX(content []byte) []byte {
+func convertTeXToMDX(content string) string {
 	for _, element := range stringPatterns {
-		content = bytes.ReplaceAll(content, []byte(element.old), []byte(element.new))
+		content = strings.ReplaceAll(content, element.old, element.new)
 	}
 
 	for _, element := range basicRegexPatterns {
-		content = element.captureGroup.ReplaceAll(content, []byte(element.replacement))
+		content = element.captureGroup.ReplaceAllString(content, element.replacement)
 	}
 	return content
 }

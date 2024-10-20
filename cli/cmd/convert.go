@@ -29,14 +29,24 @@ func generateOutputFilePath(input string) string {
 	}
 }
 
-func processFile(inputPath string) {
+func generateBibPath(input string) string {
+	if customBibPath != "" {
+		return customBibPath
+	}
+	return filepath.Join(input, "bibliography.bib")
+}
+
+func processFile(bibliography bibliography, inputPath string) {
 	outputPath := generateOutputFilePath(inputPath)
 	fi, err := os.ReadFile(inputPath)
 	if err != nil {
 		panic(err)
 	}
 
-	fo := convertTeXToMDX(fi)
+	content := string(fi)
+	content = convertTeXToMDX(content)
+	content = convertCitationsToFootnotes(bibliography, content)
+	fo := []byte(content)
 
 	err = os.WriteFile(outputPath, fo, 0644)
 	if err != nil {
@@ -44,7 +54,7 @@ func processFile(inputPath string) {
 	}
 }
 
-func processDir(dirPath string) {
+func processDir(bibliography bibliography, dirPath string) {
 	files, err := os.ReadDir(dirPath)
 	if err != nil {
 		panic(err)
@@ -52,7 +62,7 @@ func processDir(dirPath string) {
 
 	for _, file := range files {
 		inputPath := filepath.Join(dirPath, file.Name())
-		processFile(inputPath)
+		processFile(bibliography, inputPath)
 	}
 }
 
@@ -61,15 +71,13 @@ var convertCmd = &cobra.Command{
 	Short: "Convert course notes from .tex to .mdx",
 	Long: `Convert LaTeX notes for a course to MarkdownX format, which can be
 	rendered on the web.`,
-	// Args: cobra.ExactArgs(1),
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if customBibPath != "" {
-			parseBibliography(customBibPath)
-			os.Exit(0)
-		}
+		bibPath := generateBibPath(args[0])
+		bibliography := parseBibliography(bibPath)
 
 		dirPath := filepath.Join(args[0], "/chapters")
-		processDir(dirPath)
+		processDir(bibliography, dirPath)
 		if continuous {
 			watcher, err := fsnotify.NewWatcher()
 			if err != nil {
@@ -93,7 +101,7 @@ var convertCmd = &cobra.Command{
 
 							timers[event.Name] = time.AfterFunc(1*time.Second, func() {
 								fmt.Println("Files changed, re-converting")
-								processDir(dirPath)
+								processDir(bibliography, dirPath)
 								delete(timers, event.Name)
 							})
 						}
