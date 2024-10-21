@@ -1,9 +1,8 @@
 ---
 title: Logic
 ---
-
-import { Aside } from '@components';
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside } from '\@components';
+import { Tabs, TabItem } from '\@astrojs/starlight/components';
 
 
 The field of logic is at the heart of mathematics, and essentially forms the language with which we can make mathematical statements. Logic is a deep, and well-explored area -- we will explore only the beginnings of the subject.
@@ -61,14 +60,9 @@ which is a process we sometimes refer to as conjunction.
 	It is common in logic to denote the operation of statement conjuction by the operator $ \land $, i.e., $ A \land B $, although we will do fine with 'and'.
 </Aside>
 
-<center>
-		$ A $ | $ B $ | $ A $ and $ B $ 
-|---|---|---|
-		T     | T     | T               
-		T     | F     | F               
-		F     | T     | F               
-		F     | F     | F               
-</center>
-
-
-
+Suppose I make a small change to the document, including some new maths,
+$$
+\begin{align*}
+	\sum_{n=1}^{\infty}{\frac{1}{n^{2}}} = \frac{\pi^{2}}{6}
+\end{align*}
+$$
