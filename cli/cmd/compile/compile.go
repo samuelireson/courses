@@ -4,15 +4,36 @@ Copyright © 2024 Samuel Ireson <samuelireson@gmail.com>
 package compile
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/spf13/cobra"
 )
+
+var includeRegex = regexp.MustCompile(`\\include\{.*?\}`)
+
+func findIncludes(courseDir string) []string {
+	masterPath := filepath.Join(courseDir, "master.tex")
+	masterFile, err := os.ReadFile(masterPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	content := string(masterFile)
+	includeDirectives := includeRegex.FindAllString(content, -1)
+	var chapters []string
+
+	for _, includeDirective := range includeDirectives {
+		chapter := strings.TrimPrefix(includeDirective, "\\include{")
+		chapter = strings.TrimSuffix(chapter, "}")
+		chapters = append(chapters, chapter)
+	}
+
+	return chapters
+}
 
 func compileMaster(courseDir string) {
 	masterPath := filepath.Join(courseDir, "master")
@@ -62,17 +83,10 @@ func compileChapter(chapterPath, courseDir string) {
 }
 
 func compileCourse(courseDir string) {
-	chaptersDir := filepath.Join(courseDir, "chapters")
-	chapters, err := os.ReadDir(chaptersDir)
-	if err != nil {
-		log.Fatal(err)
-	}
+	chapters := findIncludes(courseDir)
 
 	for _, chapter := range chapters {
-		chapterName := chapter.Name()
-		chapterFilepath := strings.TrimSuffix(chapterName, filepath.Ext(chapterName))
-		chapterPath := filepath.Join("chapters", chapterFilepath)
-		compileChapter(chapterPath, courseDir)
+		compileChapter(chapter, courseDir)
 	}
 
 	compileMaster(courseDir)
