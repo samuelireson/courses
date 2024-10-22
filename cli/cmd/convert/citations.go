@@ -1,10 +1,11 @@
 /*
 Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 */
-package cmd
+package convert
 
 import (
 	"bufio"
+	"log"
 	"os"
 	"regexp"
 	"slices"
@@ -39,7 +40,7 @@ func parseBibliography(bibPath string) bibliography {
 
 	fi, err := os.Open(bibPath)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer fi.Close()
 
@@ -64,7 +65,7 @@ func parseBibliography(bibPath string) bibliography {
 	}
 
 	if err := scanner.Err(); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return bib
