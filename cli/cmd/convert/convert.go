@@ -46,12 +46,14 @@ func processFile(bibliography bibliography, inputPath string) {
 	content := string(fi)
 	content = convertTeXToMDX(content)
 	content = convertCitationsToFootnotes(bibliography, content)
+	content = addDownloadLinks(content, inputPath)
 	fo := []byte(content)
 
 	err = os.WriteFile(outputPath, fo, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("%s converted successfuly", inputPath)
 }
 
 func processDir(bibliography bibliography, dirPath string) {
@@ -61,8 +63,10 @@ func processDir(bibliography bibliography, dirPath string) {
 	}
 
 	for _, file := range files {
-		inputPath := filepath.Join(dirPath, file.Name())
-		processFile(bibliography, inputPath)
+		if filepath.Ext(file.Name()) == ".tex" {
+			inputPath := filepath.Join(dirPath, file.Name())
+			processFile(bibliography, inputPath)
+		}
 	}
 }
 

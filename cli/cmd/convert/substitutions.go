@@ -4,6 +4,8 @@ Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 package convert
 
 import (
+	"fmt"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -21,8 +23,9 @@ type stringPattern struct {
 var header = `---
 title: $1
 ---
-import { Aside } from '\@components';
-import { Tabs, TabItem } from '\@astrojs/starlight/components';
+import { Aside } from '@components';
+import { Tabs, TabItem, LinkButton } from '@astrojs/starlight/components';
+
 `
 
 var basicRegexPatterns = []regexPattern{
@@ -84,5 +87,21 @@ func convertTeXToMDX(content string) string {
 	for _, element := range basicRegexPatterns {
 		content = element.captureGroup.ReplaceAllString(content, element.replacement)
 	}
+	return content
+}
+
+func addDownloadLinks(content, inputPath string) string {
+
+	inputPathSections := strings.Split(inputPath, string(filepath.Separator))
+
+	courseName := "/" + filepath.Join(inputPathSections[0], inputPathSections[1])
+	chapterName := strings.TrimSuffix(inputPathSections[3], filepath.Ext(inputPathSections[3])) + ".pdf"
+	chapterDownloadPath := filepath.Join(courseName, chapterName)
+	courseDownloadPath := filepath.Join(courseName, "master.pdf")
+
+	downloadLinkTemplate := fmt.Sprintf("<div style='display: flex; justify-content: space-around;'>\n\t<LinkButton target=\"_blank\" href=\"%s\" variant=\"secondary\" icon=\"document\" >Download</LinkButton>\n\t<LinkButton target=\"_blank\" href=\"%s\" variant=\"primary\" icon=\"open-book\" >Download</LinkButton>\n</div>", chapterDownloadPath, courseDownloadPath)
+
+	content = strings.Replace(content, "\n\n", "\n\n"+downloadLinkTemplate, 1)
+
 	return content
 }

@@ -50,6 +50,16 @@ func compileMaster(courseDir string) {
 		log.Fatal(err)
 	}
 	log.Printf("%s compiled successfuly", masterPath)
+
+	outputDir := filepath.Join(courseDir, "output")
+	os.Mkdir(outputDir, os.ModePerm)
+
+	masterPDFPath := masterPath + ".pdf"
+	outputPDFPath := filepath.Join(outputDir, "master.pdf")
+	err = os.Rename(masterPDFPath, outputPDFPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func compileChapter(chapterPath, courseDir string) {
@@ -100,8 +110,26 @@ var CompileCmd = &cobra.Command{
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		compileCourse(args[0])
+		if sync {
+			outputPath := filepath.Join(args[0], "output")
+			publicDownloadPath := filepath.Join("site/public", args[0])
+
+			err := os.RemoveAll(publicDownloadPath)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = os.Rename(outputPath, publicDownloadPath)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Download path synced")
+		}
 	},
 }
 
+var sync bool
+
 func init() {
+	CompileCmd.Flags().BoolVarP(&sync, "sync", "s", false, "Sync the compiled files with those available for download")
 }
