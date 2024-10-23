@@ -4,12 +4,13 @@ Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 package cmd
 
 import (
+	"courses/cmd/compile"
+	"courses/cmd/convert"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "courses",
 	Short: "A CLI to manage course notes.",
@@ -26,4 +27,6 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(convert.ConvertCmd)
+	rootCmd.AddCommand(compile.CompileCmd)
 }

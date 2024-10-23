@@ -40,13 +40,13 @@ Use "courses [command] --help" for more information about a command.
 The main usage of the cli will be in conversion of files from `.tex` to `.mdx` format. In order to convert a chapter,
 
 ```bash
-courses convert -c <path-to-chapter>
+courses convert <path-to-chapter>
 ```
 
 ### Continuous conversion
 
-It is possible to continuously convert a course using the `--watch` flag. For example,
+It is possible to continuously convert a course using the `--continuous` flag. For example,
 
 ```bash
-courses convert -wC notes/mlnn
+courses convert -c notes/mlnn
 ```

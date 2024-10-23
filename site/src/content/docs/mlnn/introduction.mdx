@@ -1,15 +1,17 @@
 ---
 title: Introduction
 ---
-import { Aside } from '\@components';
-import { Tabs, TabItem } from '\@astrojs/starlight/components';
+import { Aside } from '@components';
+import { Tabs, TabItem, LinkButton } from '@astrojs/starlight/components';
 
+<div style='display: flex; justify-content: space-around;'>
+	<LinkButton target="_blank" href="/notes/mlnn/introduction.pdf" variant="secondary" icon="document" >Download</LinkButton>
+	<LinkButton target="_blank" href="/notes/mlnn/master.pdf" variant="primary" icon="open-book" >Download</LinkButton>
+</div>
 
 <div style='text-align: center'><em>
 	We discuss motivations for studying the mathematics behind machine learning, give an outline of the content of the course, and mention the references which were used in putting it together.
 </em></div>
-
-This is a citation[^donaldson].
 
 ## Exercises
 ### Exercises :badge[Basic]{variant=success}

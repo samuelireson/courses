@@ -1,10 +1,10 @@
 /*
 Copyright © 2024 Samuel Ireson samuelireson@gmail.com
 */
-package cmd
+package convert
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -40,33 +40,37 @@ func processFile(bibliography bibliography, inputPath string) {
 	outputPath := generateOutputFilePath(inputPath)
 	fi, err := os.ReadFile(inputPath)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	content := string(fi)
 	content = convertTeXToMDX(content)
 	content = convertCitationsToFootnotes(bibliography, content)
+	content = addDownloadLinks(content, inputPath)
 	fo := []byte(content)
 
 	err = os.WriteFile(outputPath, fo, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+	log.Printf("%s converted successfuly", inputPath)
 }
 
 func processDir(bibliography bibliography, dirPath string) {
 	files, err := os.ReadDir(dirPath)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	for _, file := range files {
-		inputPath := filepath.Join(dirPath, file.Name())
-		processFile(bibliography, inputPath)
+		if filepath.Ext(file.Name()) == ".tex" {
+			inputPath := filepath.Join(dirPath, file.Name())
+			processFile(bibliography, inputPath)
+		}
 	}
 }
 
-var convertCmd = &cobra.Command{
+var ConvertCmd = &cobra.Command{
 	Use:   "convert",
 	Short: "Convert course notes from .tex to .mdx",
 	Long: `Convert LaTeX notes for a course to MarkdownX format, which can be
@@ -81,9 +85,9 @@ var convertCmd = &cobra.Command{
 		if continuous {
 			watcher, err := fsnotify.NewWatcher()
 			if err != nil {
-				panic(err)
+				log.Fatal(err)
 			} else {
-				fmt.Printf("Watching for changes to %s\n", dirPath)
+				log.Printf("Watching for changes to %s\n", dirPath)
 			}
 			defer watcher.Close()
 
@@ -100,20 +104,20 @@ var convertCmd = &cobra.Command{
 							}
 
 							timers[event.Name] = time.AfterFunc(1*time.Second, func() {
-								fmt.Println("Files changed, re-converting")
+								log.Println("Files changed, re-converting")
 								processDir(bibliography, dirPath)
 								delete(timers, event.Name)
 							})
 						}
 					case err := <-watcher.Errors:
-						panic(err)
+						log.Fatal(err)
 					}
 				}
 			}()
 
 			err = watcher.Add(dirPath)
 			if err != nil {
-				panic(err)
+				log.Fatal(err)
 			}
 
 			<-done
@@ -126,8 +130,7 @@ var customOutputPath string
 var customBibPath string
 
 func init() {
-	rootCmd.AddCommand(convertCmd)
-	convertCmd.Flags().BoolVarP(&continuous, "continuous", "c", false, "Watch and continuously convert")
-	convertCmd.Flags().StringVarP(&customOutputPath, "output", "o", "", "Specify a custom output path")
-	convertCmd.Flags().StringVarP(&customBibPath, "bib", "b", "", "Specify a custom bibliography path")
+	ConvertCmd.Flags().BoolVarP(&continuous, "continuous", "c", false, "Watch and continuously convert")
+	ConvertCmd.Flags().StringVarP(&customOutputPath, "output", "o", "", "Specify a custom output path")
+	ConvertCmd.Flags().StringVarP(&customBibPath, "bib", "b", "", "Specify a custom bibliography path")
 }
