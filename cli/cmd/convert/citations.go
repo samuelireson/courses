@@ -91,7 +91,7 @@ func convertCitationsToFootnotes(bib bibliography, content string) string {
 	}
 
 	content = citationMatch.ReplaceAllString(content, string("[^$1]"))
-	content += strings.Join(citationContent, "\n")
+	content = content + "<div style=\"margin-top: 10rem\">\n" + strings.Join(citationContent, "\n") + "\n</div>"
 
 	return content
 }

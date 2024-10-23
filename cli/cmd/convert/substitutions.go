@@ -38,8 +38,8 @@ var basicRegexPatterns = []regexPattern{
 	{regexp.MustCompile(`\\end\{(definition|theorem|lemma|proposition|corollary|example|nonexample|notation|remark)\}`), "</Aside>"},
 
 	// fonts and ligatures
-	{regexp.MustCompile(`\\textbf\{(.*?)\}`), "* $1 *"},
-	{regexp.MustCompile(`\\textit\{(.*?)\}`), "** $1 **"},
+	{regexp.MustCompile(`\\textbf\{(.*?)\}`), "<b> $1 </b>"},
+	{regexp.MustCompile(`\\textit\{(.*?)\}`), "<em> $1 </em>"},
 }
 
 var stringPatterns = []stringPattern{
@@ -74,6 +74,11 @@ var stringPatterns = []stringPattern{
 	{"\\basic", ":badge[Basic]{variant=success}"},
 	{"\\intermediate", ":badge[Intermediate]{variant=warning}"},
 	{"\\challenging", ":badge[Challenging]{variant=danger}"},
+
+	// unordered lists
+	{"\\begin{itemize}", ""},
+	{"\\item", "-"},
+	{"\\end{itemize}", ""},
 
 	// fonts and ligatures
 	{"`", "'"},
