@@ -97,7 +97,7 @@ func convertTeXToMDX(content string) string {
 }
 
 func addDownloadLinks(content, inputPath string) string {
-	siteURL := "https://samuelireson.github.io/courses/"
+	siteURL := "https://samuelireson.github.io/courses"
 
 	inputPathSections := strings.Split(inputPath, string(filepath.Separator))
 
