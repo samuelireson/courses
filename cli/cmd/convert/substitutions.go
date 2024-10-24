@@ -23,7 +23,8 @@ type stringPattern struct {
 var header = `---
 title: $1
 ---
-import { Aside } from '@components';
+import Aside from '@components/Aside/Aside.tsx';
+import Comments from '@components/Comments/Comments.tsx';
 import { Tabs, TabItem, LinkButton } from '@astrojs/starlight/components';
 
 `
@@ -108,5 +109,10 @@ func addDownloadLinks(content, inputPath string) string {
 
 	content = strings.Replace(content, "\n\n", "\n\n"+downloadLinkTemplate, 1)
 
+	return content
+}
+
+func addComments(content string) string {
+	content += "\n<Comments client:only=\"react\" />"
 	return content
 }

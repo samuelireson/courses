@@ -47,6 +47,7 @@ func processFile(bibliography bibliography, inputPath string) {
 	content = convertTeXToMDX(content)
 	content = convertCitationsToFootnotes(bibliography, content)
 	content = addDownloadLinks(content, inputPath)
+	content = addComments(content)
 	fo := []byte(content)
 
 	err = os.WriteFile(outputPath, fo, 0644)
