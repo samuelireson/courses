@@ -97,13 +97,14 @@ func convertTeXToMDX(content string) string {
 }
 
 func addDownloadLinks(content, inputPath string) string {
+	siteURL := "https://samuelireson.github.io/courses/"
 
 	inputPathSections := strings.Split(inputPath, string(filepath.Separator))
 
 	courseName := "/" + filepath.Join(inputPathSections[0], inputPathSections[1])
 	chapterName := strings.TrimSuffix(inputPathSections[3], filepath.Ext(inputPathSections[3])) + ".pdf"
-	chapterDownloadPath := filepath.Join(courseName, chapterName)
-	courseDownloadPath := filepath.Join(courseName, "master.pdf")
+	chapterDownloadPath := siteURL + filepath.Join(courseName, chapterName)
+	courseDownloadPath := siteURL + filepath.Join(courseName, "master.pdf")
 
 	downloadLinkTemplate := fmt.Sprintf("<div style='display: flex; justify-content: space-around;'>\n\t<LinkButton target=\"_blank\" href=\"%s\" variant=\"secondary\" icon=\"document\" >Download</LinkButton>\n\t<LinkButton target=\"_blank\" href=\"%s\" variant=\"primary\" icon=\"open-book\" >Download</LinkButton>\n</div>", chapterDownloadPath, courseDownloadPath)
 
