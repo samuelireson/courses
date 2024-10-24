@@ -1,22 +1,22 @@
-import { Icon } from '@astrojs/starlight/components';
 import "./Aside.css"
+import type React from 'react';
 
 const asideVariants = ['comment', 'definition', 'result', 'example'] as const;
-const icons = { comment: 'comment', definition: 'pencil', result: 'information', example: 'magnifier' } as const;
 
 interface Props {
 	type: (typeof asideVariants)[number];
 	title: string;
+	children: React.ReactNode;
 }
 
-const Aside = ({ type, title }: Props) => {
+const Aside = ({ type, title, children }: Props) => {
 	return (
 		<aside aria-label={title} className={`starlight-aside starlight-aside--${type}`}>
 			<p className="starlight-aside__title" aria-hidden="true">
-				<Icon name={icons[type]} class="starlight-aside__icon" />{title}
+				{title}
 			</p>
 			<section className="starlight-aside__content">
-				<slot />
+				{children}
 			</section>
 		</aside>
 
