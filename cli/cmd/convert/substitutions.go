@@ -105,7 +105,7 @@ func addDownloadLinks(content, inputPath string) string {
 	chapterDownloadPath := filepath.Join(courseName, chapterName)
 	courseDownloadPath := filepath.Join(courseName, "master.pdf")
 
-	downloadLinkTemplate := fmt.Sprintf("<div style='display: flex; justify-content: space-around;'>\n\t<LinkButton target=\"_blank\" href=\"/%s\" variant=\"secondary\" icon=\"document\" >Download</LinkButton>\n\t<LinkButton target=\"_blank\" href=\"/%s\" variant=\"primary\" icon=\"open-book\" >Download</LinkButton>\n</div>", chapterDownloadPath, courseDownloadPath)
+	downloadLinkTemplate := fmt.Sprintf("<div style='display: flex; justify-content: space-around;'>\n\t<LinkButton target=\"_blank\" href=\"%s\" variant=\"secondary\" icon=\"document\" >Download</LinkButton>\n\t<LinkButton target=\"_blank\" href=\"%s\" variant=\"primary\" icon=\"open-book\" >Download</LinkButton>\n</div>", chapterDownloadPath, courseDownloadPath)
 
 	content = strings.Replace(content, "\n\n", "\n\n"+downloadLinkTemplate, 1)
 
