@@ -12,6 +12,9 @@ export default defineConfig({
     integrations: [starlight({
         plugins: [starlightHeadingBadgesPlugin()],
         title: 'Courses',
+        social: {
+				    github: 'https://github.com/samuelireson/courses'
+			  },
         sidebar: [
             //{
             //	label: 'Foundations',
