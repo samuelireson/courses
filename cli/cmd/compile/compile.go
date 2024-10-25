@@ -8,32 +8,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/spf13/cobra"
 )
-
-var includeRegex = regexp.MustCompile(`\\include\{.*?\}`)
-
-func findIncludes(courseDir string) []string {
-	masterPath := filepath.Join(courseDir, "master.tex")
-	masterFile, err := os.ReadFile(masterPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	content := string(masterFile)
-	includeDirectives := includeRegex.FindAllString(content, -1)
-	var chapters []string
-
-	for _, includeDirective := range includeDirectives {
-		chapter := strings.TrimPrefix(includeDirective, "\\include{")
-		chapter = strings.TrimSuffix(chapter, "}")
-		chapters = append(chapters, chapter)
-	}
-
-	return chapters
-}
 
 func compileMaster(courseDir string) {
 	masterPath := filepath.Join(courseDir, "master")
@@ -49,7 +27,7 @@ func compileMaster(courseDir string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%s compiled successfuly", masterPath)
+	log.Printf("%s compiled successfully", masterPath)
 
 	outputDir := filepath.Join(courseDir, "output")
 	os.Mkdir(outputDir, os.ModePerm)
@@ -62,7 +40,8 @@ func compileMaster(courseDir string) {
 	}
 }
 
-func compileChapter(chapterPath, courseDir string) {
+func compileChapter(chapter, courseDir string) {
+	chapterPath := filepath.Join(courseDir, "chapters", chapter)
 	useTeX := `-usepretex="\\includeonly{` + chapterPath + `}"`
 	masterPath := filepath.Join(courseDir, "master.tex")
 	compileCommand := exec.Command(
@@ -82,23 +61,29 @@ func compileChapter(chapterPath, courseDir string) {
 	outputDir := filepath.Join(courseDir, "output")
 	os.Mkdir(outputDir, os.ModePerm)
 
-	chapterName := strings.Split(chapterPath, "/")[1]
+	chapterName := strings.TrimSuffix(chapter, filepath.Ext(chapter))
 	outputPDFPath := filepath.Join(outputDir, chapterName+".pdf")
 	masterPDFPath := strings.TrimSuffix(masterPath, filepath.Ext(masterPath)) + ".pdf"
 	err = os.Rename(masterPDFPath, outputPDFPath)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%s compiled successfuly", filepath.Join(courseDir, chapterPath))
+	log.Printf("%s compiled successfully", filepath.Join(courseDir, chapterPath))
 }
 
 func compileCourse(courseDir string) {
-	chapters := findIncludes(courseDir)
+	chapterDir := filepath.Join(courseDir, "chapters")
+	chapters, err := os.ReadDir(chapterDir)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	compileMaster(courseDir)
 
 	for _, chapter := range chapters {
-		compileChapter(chapter, courseDir)
+		if filepath.Ext(chapter.Name()) == ".tex" {
+			compileChapter(chapter.Name(), courseDir)
+		}
 	}
 }
 
