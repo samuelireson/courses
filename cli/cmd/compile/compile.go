@@ -41,8 +41,9 @@ func compileMaster(courseDir string) {
 }
 
 func compileChapter(chapter, courseDir string) {
-	chapterPath := filepath.Join(courseDir, "chapters", chapter)
-	useTeX := `-usepretex="\\includeonly{` + chapterPath + `}"`
+	includeChapterPath := filepath.Join("chapters", chapter)
+	chapterPath := filepath.Join(courseDir, includeChapterPath)
+	useTeX := `-usepretex="\\includeonly{` + includeChapterPath + `}"`
 	masterPath := filepath.Join(courseDir, "master.tex")
 	compileCommand := exec.Command(
 		"latexmk",
