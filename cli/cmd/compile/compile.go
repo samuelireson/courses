@@ -95,11 +95,11 @@ func compileChapter(chapterPath, courseDir string) {
 func compileCourse(courseDir string) {
 	chapters := findIncludes(courseDir)
 
+	compileMaster(courseDir)
+
 	for _, chapter := range chapters {
 		compileChapter(chapter, courseDir)
 	}
-
-	compileMaster(courseDir)
 }
 
 var CompileCmd = &cobra.Command{
