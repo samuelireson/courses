@@ -18,13 +18,6 @@ jobs:
       with:
         go-version: '1.23.1'
 
-    - name: Install TeX
-      run: |
-          sudo apt update
-          sudo apt install latexmk
-          sudo tlmgr update --self --all
-          sudo tmlgr install biber
-
     - name: Build cli
       run: |
           cd cli/
@@ -33,6 +26,3 @@ jobs:
 
     - name: Convert 
       run: courses convert ${{ matrix.course }}
-
-    - name: Compile
-      run: courses compile -s ${{ matrix.course }}
