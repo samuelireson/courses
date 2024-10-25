@@ -20,4 +20,9 @@ jobs:
           cd cli/
           go install
           cd ..
-          courses --help
+
+    - name: Convert 
+      run: courses convert notes/mlnn
+
+    - name: Compile
+      run: courses compile -s notes/mlnn
