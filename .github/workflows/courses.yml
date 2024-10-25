@@ -7,6 +7,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        course: [notes/mlnn]
     steps:
     - uses: actions/checkout@v4
 
@@ -15,6 +18,11 @@ jobs:
       with:
         go-version: '1.23.1'
 
+    - name: Install Latexmk
+      run: |
+          sudo apt update
+          sudo apt install latexmk
+
     - name: Build cli
       run: |
           cd cli/
@@ -22,7 +30,7 @@ jobs:
           cd ..
 
     - name: Convert 
-      run: courses convert notes/mlnn
+      run: courses convert ${{ matrix.course }}
 
     - name: Compile
-      run: courses compile -s notes/mlnn
+      run: courses compile -s ${{ matrix.course }}
