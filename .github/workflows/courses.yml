@@ -22,7 +22,8 @@ jobs:
       run: |
           sudo apt update
           sudo apt install latexmk
-          sudo apt install texlive
+          sudo tlmgr update --self --all
+          sudo tmlgr install biber
 
     - name: Build cli
       run: |
