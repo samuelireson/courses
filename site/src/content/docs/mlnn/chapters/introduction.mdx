@@ -5,10 +5,7 @@ import Aside from '@components/Aside/Aside.tsx';
 import Comments from '@components/Comments/Comments.tsx';
 import { Tabs, TabItem, LinkButton } from '@astrojs/starlight/components';
 
-<div style='display: flex; justify-content: space-around;'>
-	<LinkButton target="_blank" href="https://samuelireson.github.io/courses/notes/mlnn/introduction.pdf" variant="secondary" icon="document" >Download</LinkButton>
-	<LinkButton target="_blank" href="https://samuelireson.github.io/courses/notes/mlnn/master.pdf" variant="primary" icon="open-book" >Download</LinkButton>
-</div>
+
 
 <div style='text-align: center'><em>
 	We discuss motivations for studying the mathematics behind machine learning, give an outline of the content of the course, and mention the references which were used in putting it together.
@@ -47,4 +44,3 @@ Those familiar with the above topics may note that this course is structured in 
 [^faisal]: <em> Mathematics for Machine Learning </em> -- Faisal, Aldo; Deisenroth, Marc Peter and Ong, Cheng Soon
 [^schwartz]: <em> Understanding Machine Learning - from theory to algorithms </em> -- Shalev-Schwartz and Ben-David
 </div>
-<Comments client:only="react" />
