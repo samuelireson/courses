@@ -1,0 +1,3 @@
+bibliographypath: bibliography.bib
+mdxdir: site/src/content/docs/
+texdir: notes/
