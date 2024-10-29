@@ -31,12 +31,9 @@ jobs:
         with:
           go-version: '1.23.1'
       - name: Build cli
-        run: |
-            cd cli/
-            go install
-            cd ..
+        run: go install github.com/samuelireson/notes-cli
       - name: Convert 
-        run: courses convert notes/mlnn
+        run: notes-cli convert notes/mlnn
       - name: Detect package manager
         id: detect-package-manager
         run: |
