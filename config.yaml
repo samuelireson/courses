@@ -1,5 +1,5 @@
 bibliographypath: bibliography.bib
 mdxdir: site/src/content/docs/
 pdfdir: site/public/
-siteurl: samuelireson.github.io/courses
+siteurl: courses/
 texdir: notes/
