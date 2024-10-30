@@ -5,6 +5,13 @@
 \contentsline {chapter}{\numberline {3}Multivariable Calculus}{5}{}%
 \contentsline {section}{\numberline {3.1}Introduction}{5}{}%
 \contentsline {chapter}{\numberline {4}Probability}{6}{}%
-\contentsline {chapter}{\numberline {5}Optimisation Theory}{7}{}%
-\contentsline {chapter}{\numberline {6}Linear Regression}{8}{}%
-\contentsline {chapter}{\numberline {7}Logistic Regression}{9}{}%
+\contentsline {chapter}{\numberline {5}Learning Problems}{7}{}%
+\contentsline {section}{\numberline {5.1}Introduction}{7}{}%
+\contentsline {section}{\numberline {5.2}A formal learning model}{7}{}%
+\contentsline {subsection}{\numberline {5.2.1}Learning input}{7}{}%
+\contentsline {subsection}{\numberline {5.2.2}Learning output}{7}{}%
+\contentsline {subsection}{\numberline {5.2.3}A data generating model}{8}{}%
+\contentsline {subsection}{\numberline {5.2.4}Measure of success}{8}{}%
+\contentsline {chapter}{\numberline {6}Optimisation Theory}{9}{}%
+\contentsline {chapter}{\numberline {7}Linear Regression}{10}{}%
+\contentsline {chapter}{\numberline {8}Logistic Regression}{11}{}%
