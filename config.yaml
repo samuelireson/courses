@@ -1,3 +1,4 @@
 bibliographypath: bibliography.bib
 mdxdir: site/src/content/docs/
+pdfdir: site/public/
 texdir: notes/
