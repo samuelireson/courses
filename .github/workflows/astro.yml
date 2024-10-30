@@ -33,7 +33,9 @@ jobs:
       - name: Build cli
         run: go install github.com/samuelireson/notes-cli@latest
       - name: Convert 
-        run: notes-cli convert notes/mlnn
+        run: |
+            notes-cli convert notes/mlnn
+            cat site/src/content/docs/mlnn/chapters/introduction.mdx
       - name: Detect package manager
         id: detect-package-manager
         run: |
