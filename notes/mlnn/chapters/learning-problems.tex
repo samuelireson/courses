@@ -34,7 +34,63 @@ The learner of a statistical learning problem has access to the following,
 \end{itemize}
 
 \subsection{A data generating model}
+It is important to consider how exactly the training data is generated, as this is integral to how we consider the learning to occur. We assume that there is some probability distribution $ \mathcal{D} $ over $ \mathcal{X} $ which, importantly, the learner does not know about. For the time being, we also make the assumption that there is some `correct' labelling function $ f: \mathcal{X} \to \mathcal{Y}: x_{i} \mapsto y_{i} $, which maps the object $ x_{i} $ to it's correct label in every case. Explicitly,
+\begin{align*}
+	f ( x_{i} ) = y_{i} \quad \forall i.
+\end{align*}
+
+In every learning scenario, it is exactly this function $ f $ which the learner aims to obtain. In our example, we can suppose that we have past data, $ \mathcal{S} $ which provides a source of truth in the way that each of the training examples is an individual of whom we \textit{know} the loaning outcome.
+
 
 \subsection{Measure of success}
+The final element of our formal learning model is the means to quantify the success of our learning, or more strictly our hypothesis, $ h $. In our classification problem, the error of the hypothesis $ h $ is defined to be the probability that for a given data point $ x \in \mathcal{X} $, the predicted classification is not the same as the `correct' classification. Notatively,
+\begin{align*}
+	L_{\mathcal{D}, f}( h ) := \mathbb{P}_{x \sim \mathcal{D}}\left[ h ( x ) \neq f ( x ) \right]
+\end{align*}
 
+\begin{remark}
+	The notation of $ L_{\mathcal{D}, f} $ is well chosen since it makes clear the dependence of the error of the classifier on the underlying distribution $ \mathcal{D} $ and correct classification function $ f $, although if the context is clear we will omit this for brevity.
+
+	It is also common to refer to the probability $ L_{\mathcal{D}, f}( h ) $ as the `risk', and we will often refer to it as such.
+\end{remark}
+
+
+\section{Empirical Risk Minimisation}
+We now have a good idea about the inputs, outputs and measures of success of a formal learning problem. The natural next step is to explore the strategy by which we can solve such problems.
+
+It maybe initially seems obvious that we would like to minimise the risk, explicitly reducing the probability of incorrect classification, implicitly bringing our hypothesis output $ h $ closer to the true classifier $ f $. Although this is the right idea, we are the learner is limited by their knowledge of the problem. In particular, the learning knows nothing of the distribution $ \mathcal{D} $, nothing of the true classifier $ f $, and hence nothing of the risk $ L_{\mathcal{D}, f} $. As a result, we must construct a different quantity which we would like to minimise.
+
+\begin{definition}
+	Given a training sequence $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, the \textit{empirical risk} with respect to $ \mathcal{S} $ is defined and denoted by,
+	\begin{align*}
+		L_{\mathcal{S}}( h ) := \frac{|\left\{ i \in \{ 1,...,m \}: h ( x_{i} ) \neq f ( x_{i} ) \right\}|}{m}
+	\end{align*}
+\end{definition}
+
+This definition is basic in spite of it's verbosity. The numerator is expressing the process of counting misclassifications on the training set, and we are dividing by the size of the training set to ensure that $ L_{\mathcal{S}} $ is bounded between $ 0 $ and $ 1 $.
+
+The empirical risk is a good quantity to consider in learning problems since it is related to the training data available to us, i.e., ``the snapshot of the world available to the learner''\cite{schwartz}. So, our strategy of learning comes down to minimising the empirical risk -- finding a hypothesis $ h $, which agrees well with $ f $ on the training set. Learning by this strategy is called \textit{empirical risk minimisation}, referred to by $ \mathrm{ERM} $.
+
+\subsection{Overfitting}
+We now explore a pitfall into which many learning algorithms fall, and one which we will illustrate using the framework so far developed in this chapter, working again with the example of loaning.
+
+\begin{example}
+	In order to illustrate overfitting in the ERM paradigm, we suppose that the underlying distribution $ \mathcal{D} $ on loan applicants $ \mathcal{X} $ is uniform, and hence for a given training set, half of the applicants default on their loan, i.e., have classification $ y_{i} = -1 $.
+
+	It may seem initially that the process of finding an ERM hypothesis is challenging, but this is not actually the case. We can find a scenario agnostic ERM hypothesis,
+	\begin{align*}
+		h_{\mathcal{S}}( x ) = \begin{cases}
+			                       y_{i} & \text{ if } \exists i \in \{ 1,...,m \} \text{ s.t. } x_{i} = x \\
+			                       1     & \text{ otherwise }
+		                       \end{cases}
+	\end{align*}
+
+	What exactly is this hypothesis doing? If the selected data point $ x \in \mathcal{X} $ can be found in the training set $ \mathcal{S} $, then the hypothesis returns the label which is assigned to $ x $ in the training set. Otherwise, the hypothesis returns $ 1 $, i.e., predicts that the loanee will be good for their loan and won't default. This hypothesis $ h_{\mathcal{S}} $ is ERM since is agrees exactly with the labels provided in the dataset, and hence has $ L_{\mathcal{S}}( h_{\mathcal{S}} ) = 0 $ -- there is zero probability of the hypothesis incorrectly classifying an instance of the training set. However, if the hypothesis returns $ -1 $ on only a finite number of instances, then $ L_{\mathcal{D}, f}( h_{\mathcal{S}} ) = 1/2 $.
+
+	We have found a hypothesis which according to our strategy provides perfect learning, but in reality, performs very badly. That is, the hypothesis cannot generalise. It is `overfitted' to the training set.
+\end{example}
+
+The previous example outlines a clear failure of the ERM paradigm, but we shouldn't let this provide obstruction to it's use in total; instead we will find ways to reprimand it's issues.
+
+\section{Limiting the hypothesis space}
 

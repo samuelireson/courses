@@ -8,8 +8,8 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://samuelireson.github.io/courses',
-	base: 'courses',
+	site: 'https://samuelireson.github.io',
+	base: '/courses',
 	integrations: [starlight({
 		plugins: [starlightHeadingBadgesPlugin()],
 		title: 'Courses',
