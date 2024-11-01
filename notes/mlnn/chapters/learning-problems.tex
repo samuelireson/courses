@@ -75,9 +75,9 @@ The empirical risk is a good quantity to consider in learning problems since it 
 We now explore a pitfall into which many learning algorithms fall, and one which we will illustrate using the framework so far developed in this chapter, working again with the example of loaning.
 
 \begin{example}
-	In order to illustrate overfitting in the ERM paradigm, we suppose that the underlying distribution $ \mathcal{D} $ on loan applicants $ \mathcal{X} $ is uniform, and hence for a given training set, half of the applicants default on their loan, i.e., have classification $ y_{i} = -1 $.
+	In order to illustrate overfitting in the $ \mathrm{ERM} $ paradigm, we suppose that the underlying distribution $ \mathcal{D} $ on loan applicants $ \mathcal{X} $ is uniform, that is, the correct classification of the feature space is half-half between default ($ 1 $) and non-default ($ -1 $).
 
-	It may seem initially that the process of finding an ERM hypothesis is challenging, but this is not actually the case. We can find a scenario agnostic ERM hypothesis,
+	It may seem initially that the process of finding an $ \mathrm{ERM} $ hypothesis is challenging, but this is not actually the case. We can find a scenario agnostic $ \mathrm{ERM} $ hypothesis,
 	\begin{align*}
 		h_{\mathcal{S}}( x ) = \begin{cases}
 			                       y_{i} & \text{ if } \exists i \in \{ 1,...,m \} \text{ s.t. } x_{i} = x \\
@@ -85,12 +85,49 @@ We now explore a pitfall into which many learning algorithms fall, and one which
 		                       \end{cases}
 	\end{align*}
 
-	What exactly is this hypothesis doing? If the selected data point $ x \in \mathcal{X} $ can be found in the training set $ \mathcal{S} $, then the hypothesis returns the label which is assigned to $ x $ in the training set. Otherwise, the hypothesis returns $ 1 $, i.e., predicts that the loanee will be good for their loan and won't default. This hypothesis $ h_{\mathcal{S}} $ is ERM since is agrees exactly with the labels provided in the dataset, and hence has $ L_{\mathcal{S}}( h_{\mathcal{S}} ) = 0 $ -- there is zero probability of the hypothesis incorrectly classifying an instance of the training set. However, if the hypothesis returns $ -1 $ on only a finite number of instances, then $ L_{\mathcal{D}, f}( h_{\mathcal{S}} ) = 1/2 $.
+	What exactly is this hypothesis doing? If the selected data point $ x \in \mathcal{X} $ can be found in the training set $ \mathcal{S} $, then the hypothesis returns the label which is assigned to $ x $ in the training set. Otherwise, the hypothesis returns $ 1 $, i.e., predicts that the loanee will be good for their loan and won't default. This hypothesis $ h_{\mathcal{S}} $ is $ \mathrm{ERM} $ since is agrees exactly with the labels provided in the dataset, and hence has $ L_{\mathcal{S}}( h_{\mathcal{S}} ) = 0 $ -- there is zero probability of the hypothesis incorrectly classifying an instance of the training set. However, if the hypothesis returns $ -1 $ on only a finite number of instances, then $ L_{\mathcal{D}, f}( h_{\mathcal{S}} ) = 1/2 $.
 
 	We have found a hypothesis which according to our strategy provides perfect learning, but in reality, performs very badly. That is, the hypothesis cannot generalise. It is `overfitted' to the training set.
 \end{example}
 
-The previous example outlines a clear failure of the ERM paradigm, but we shouldn't let this provide obstruction to it's use in total; instead we will find ways to reprimand it's issues.
+The previous example outlines a clear failure of the $ \mathrm{ERM} $ paradigm, but we shouldn't let this provide obstruction to it's use in total; instead we will find ways to reprimand it's issues.
 
 \section{Limiting the hypothesis space}
+One way to address the problem of overfitting in $ \mathrm{ERM} $ is to limit the possible hypotheses which we will output from learning. In particular, the learner should explicitly define a set of possible predictors. We call this set the \textit{hypothesis class}, and typically label it by $ \mathcal{H} $, which contains hypotheses of the form we have seen previously; functions $ h: \mathcal{X} \to \mathcal{Y} $.
+
+In order to distinguish the $ \mathrm{ERM} $ learning rule from the hypothesis restricted analogue, we use $ \mathrm{ERM}_{\mathcal{H}} $. Furthermore, we can understand the $ \mathrm{ERM}_{\mathcal{H}} $ learning rule as minimisation of the empirical risk over the set of hypotheses. That is,
+\begin{align*}
+	\mathrm{ERM}_{\mathcal{H}}( \mathcal{S} ) \in \argmin_{h \in \mathcal{H}}\{ L_{\mathcal{S}}( h ) \}.
+\end{align*}
+
+\begin{notation}
+	For those who haven't seen it before, the notation $ \argmin_{x \in \mathbb{R}}\{ f ( x ) \} $ denotes the value (or set of values) of $ x $ in the set $ \mathbb{R} $ which minimises the function $ f $. So, in our case, we are looking for the hypothesis $ h $ in the hypothesis set $ \mathcal{H} $ which minimises the empirical risk function $ L_{\mathcal{S}} $.
+\end{notation}
+
+It is natural to ask how exactly a learner should go about limiting/defining a hypothesis set. The restriction to a certain set of hypotheses should be based on some prior knowledge of the problem, the process of choosing this hypothesis set is referred to as \textit{inductive bias}. It should also be fully considered whether or not the restricted hypothesis set is a good one; will the restriction actually prevent overfitting of the learner? We will explore some examples in this direction later on.
+
+\begin{example}
+	A natural way to limit the potential hypotheses is to limit the size of the hypothesis set. That is, we may impose a finiteness condition on $ \mathcal{H} $. We could let $ \mathcal{H} $ be the set of all predictors which can be implemented via python programs of at most $ 10^{32} $ characters. There are a number of other common examples.
+\end{example}
+
+\section{PAC Learnability}
+\begin{definition}
+	A hypothesis class $ \mathcal{H} $ is said to be \textit{Probably Approximately Correct (PAC) learnable} if there exists a function $ m_{\mathcal{H}}: ( 0,1 )^{2}\to \mathbb{N} $ and a learning algorithm $ \mathcal{A} $ that satisfy the following condition.
+
+	For every $ \epsilon, \delta \in ( 0,1 ) $, for every probability distribution $ \mathcal{D} $ over $ \mathcal{X} $, and for every labelling function $ f: \mathcal{X}\to \mathcal{Y} $, if the assumption of realisability holds, then when the algorithm takes as input $ m \geq m_{\mathcal{H}}( \epsilon, \delta ) $ i.i.d. data points generated by $ \mathcal{D} $ and labelled by $ f $, the hypothesis returned by $ \mathcal{A} $ is, with probability at least $ 1 - \delta $, such that,
+	\begin{align*}
+		L_{\mathcal{D}, f}( h ) \leq \epsilon
+	\end{align*}
+\end{definition}
+
+\begin{remark}
+	If you haven't taken any higher level mathematics courses, it can be said, almost with certainty, that this is the most intimidating definition you have seen. The majority of this intimidation is due to the necessity to speak very carefully in definitions, not to assume or state things which may not necessarily be true. The idea hidden in the definition is however fairly intuitive.
+
+	NEEDS EXPLANATION.
+\end{remark}
+
+\begin{proposition}
+	Every finite hypothesis class $ \mathcal{H} $ is $ \mathrm{PAC} $ learnable.
+\end{proposition}
+
 
