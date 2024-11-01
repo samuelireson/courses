@@ -8,8 +8,8 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://samuelireson.github.io/courses',
-	base: 'courses',
+	site: 'https://samuelireson.github.io',
+	base: '/courses',
 	integrations: [starlight({
 		plugins: [starlightHeadingBadgesPlugin()],
 		title: 'Courses',
@@ -24,6 +24,7 @@ export default defineConfig({
 					{ label: 'Linear Algebra', slug: 'mlnn/chapters/linear-algebra' },
 					{ label: 'Multivariable Calculus', slug: 'mlnn/chapters/multivariable-calculus' },
 					{ label: 'Probability', slug: 'mlnn/chapters/probability' },
+					{ label: 'Learning Problems', slug: 'mlnn/chapters/learning-problems' },
 					{ label: 'Optimisation', slug: 'mlnn/chapters/optimisation' },
 					{ label: 'Linear Regression', slug: 'mlnn/chapters/linear-regression' },
 					{ label: 'Logistic Regression', slug: 'mlnn/chapters/logistic-regression' },
