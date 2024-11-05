@@ -11,7 +11,7 @@ Suppose that you are a loaner, aiming to determine if an arbitrary loanee will o
 
 What information will be useful in this task? How will we determine if our solution is adequate? How will be provide a useful notation to describe the problem?
 
-\section{A formal learning model}
+\section{A formal learning model \basic}
 \subsection{Learning input}
 The learner of a statistical learning problem has access to the following,
 \begin{itemize}
@@ -54,14 +54,13 @@ The final element of our formal learning model is the means to quantify the succ
 	It is also common to refer to the probability $ L_{\mathcal{D}, f}( h ) $ as the `risk', and we will often refer to it as such.
 \end{remark}
 
-
-\section{Empirical Risk Minimisation}
+\section{Empirical Risk Minimisation \intermediate}
 We now have a good idea about the inputs, outputs and measures of success of a formal learning problem. The natural next step is to explore the strategy by which we can solve such problems.
 
 It maybe initially seems obvious that we would like to minimise the risk, explicitly reducing the probability of incorrect classification, implicitly bringing our hypothesis output $ h $ closer to the true classifier $ f $. Although this is the right idea, we are the learner is limited by their knowledge of the problem. In particular, the learning knows nothing of the distribution $ \mathcal{D} $, nothing of the true classifier $ f $, and hence nothing of the risk $ L_{\mathcal{D}, f} $. As a result, we must construct a different quantity which we would like to minimise.
 
 \begin{definition}
-	Given a training sequence $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, the \textit{empirical risk} with respect to $ \mathcal{S} $ is defined and denoted by,
+	Given a training sequence $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, the \defined{empirical risk} with respect to $ \mathcal{S} $ is defined and denoted by,
 	\begin{align*}
 		L_{\mathcal{S}}( h ) := \frac{|\left\{ i \in \{ 1,...,m \}: h ( x_{i} ) \neq f ( x_{i} ) \right\}|}{m}
 	\end{align*}
@@ -69,7 +68,7 @@ It maybe initially seems obvious that we would like to minimise the risk, explic
 
 This definition is basic in spite of it's verbosity. The numerator is expressing the process of counting misclassifications on the training set, and we are dividing by the size of the training set to ensure that $ L_{\mathcal{S}} $ is bounded between $ 0 $ and $ 1 $.
 
-The empirical risk is a good quantity to consider in learning problems since it is related to the training data available to us, i.e., ``the snapshot of the world available to the learner''\cite{schwartz}. So, our strategy of learning comes down to minimising the empirical risk -- finding a hypothesis $ h $, which agrees well with $ f $ on the training set. Learning by this strategy is called \textit{empirical risk minimisation}, referred to by $ \mathrm{ERM} $.
+The empirical risk is a good quantity to consider in learning problems since it is related to the training data available to us, i.e., ``the snapshot of the world available to the learner''\cite{schwartz}. So, our strategy of learning comes down to minimising the empirical risk -- finding a hypothesis $ h $, which agrees well with $ f $ on the training set. Learning by this strategy is called \defined{empirical risk minimisation}, referred to by $ \mathrm{ERM} $.
 
 \subsection{Overfitting}
 We now explore a pitfall into which many learning algorithms fall, and one which we will illustrate using the framework so far developed in this chapter, working again with the example of loaning.
@@ -93,7 +92,7 @@ We now explore a pitfall into which many learning algorithms fall, and one which
 The previous example outlines a clear failure of the $ \mathrm{ERM} $ paradigm, but we shouldn't let this provide obstruction to it's use in total; instead we will find ways to reprimand it's issues.
 
 \section{Limiting the hypothesis space}
-One way to address the problem of overfitting in $ \mathrm{ERM} $ is to limit the possible hypotheses which we will output from learning. In particular, the learner should explicitly define a set of possible predictors. We call this set the \textit{hypothesis class}, and typically label it by $ \mathcal{H} $, which contains hypotheses of the form we have seen previously; functions $ h: \mathcal{X} \to \mathcal{Y} $.
+One way to address the problem of overfitting in $ \mathrm{ERM} $ is to limit the possible hypotheses which we will output from learning. In particular, the learner should explicitly define a set of possible predictors. We call this set the \defined{hypothesis class}, and typically label it by $ \mathcal{H} $, which contains hypotheses of the form we have seen previously; functions $ h: \mathcal{X} \to \mathcal{Y} $.
 
 In order to distinguish the $ \mathrm{ERM} $ learning rule from the hypothesis restricted analogue, we use $ \mathrm{ERM}_{\mathcal{H}} $. Furthermore, we can understand the $ \mathrm{ERM}_{\mathcal{H}} $ learning rule as minimisation of the empirical risk over the set of hypotheses. That is,
 \begin{align*}
@@ -104,30 +103,55 @@ In order to distinguish the $ \mathrm{ERM} $ learning rule from the hypothesis r
 	For those who haven't seen it before, the notation $ \argmin_{x \in \mathbb{R}}\{ f ( x ) \} $ denotes the value (or set of values) of $ x $ in the set $ \mathbb{R} $ which minimises the function $ f $. So, in our case, we are looking for the hypothesis $ h $ in the hypothesis set $ \mathcal{H} $ which minimises the empirical risk function $ L_{\mathcal{S}} $.
 \end{notation}
 
-It is natural to ask how exactly a learner should go about limiting/defining a hypothesis set. The restriction to a certain set of hypotheses should be based on some prior knowledge of the problem, the process of choosing this hypothesis set is referred to as \textit{inductive bias}. It should also be fully considered whether or not the restricted hypothesis set is a good one; will the restriction actually prevent overfitting of the learner? We will explore some examples in this direction later on.
+It is natural to ask how exactly a learner should go about limiting/defining a hypothesis set. The restriction to a certain set of hypotheses should be based on some prior knowledge of the problem, the process of choosing this hypothesis set is referred to as \defined{inductive bias}. It should also be fully considered whether or not the restricted hypothesis set is a good one; will the restriction actually prevent overfitting of the learner? We will explore some examples in this direction later on.
 
 \begin{example}
 	A natural way to limit the potential hypotheses is to limit the size of the hypothesis set. That is, we may impose a finiteness condition on $ \mathcal{H} $. We could let $ \mathcal{H} $ be the set of all predictors which can be implemented via python programs of at most $ 10^{32} $ characters. There are a number of other common examples.
 \end{example}
 
-\section{PAC Learnability}
+\section{PAC Learnability \challenging}
 \begin{definition}
-	A hypothesis class $ \mathcal{H} $ is said to be \textit{Probably Approximately Correct (PAC) learnable} if there exists a function $ m_{\mathcal{H}}: ( 0,1 )^{2}\to \mathbb{N} $ and a learning algorithm $ \mathcal{A} $ that satisfy the following condition.
+	A hypothesis class $ \mathcal{H} $ is said to be \defined{Probably Approximately Correct (PAC) learnable} if there exists a function $ m_{\mathcal{H}}: ( 0,1 )^{2}\to \mathbb{N} $ and a learning algorithm $ \mathcal{A} $ that satisfy the following condition.
 
-	For every $ \epsilon, \delta \in ( 0,1 ) $, for every probability distribution $ \mathcal{D} $ over $ \mathcal{X} $, and for every labelling function $ f: \mathcal{X}\to \mathcal{Y} $, if the assumption of realisability holds, then when the algorithm takes as input $ m \geq m_{\mathcal{H}}( \epsilon, \delta ) $ i.i.d. data points generated by $ \mathcal{D} $ and labelled by $ f $, the hypothesis returned by $ \mathcal{A} $ is, with probability at least $ 1 - \delta $, such that,
+	For every $ \epsilon, \delta \in ( 0,1 ) $, for every probability distribution $ \mathcal{D} $ over $ \mathcal{X} $, and for every labelling function $ f: \mathcal{X}\to \mathcal{Y} $, if the assumption of realisability holds, then when the algorithm takes as input $ m \geq m_{\mathcal{H}}( \epsilon, \delta ) $ i.i.d. data points generated by $ \mathcal{D} $ and labelled by $ f $,
 	\begin{align*}
-		L_{\mathcal{D}, f}( h ) \leq \epsilon
+		\mathbb{P}_{\mathcal{S}\sim \mathcal{D}}\left[ L_{\mathcal{D}, f}( h_{\mathcal{S}} )\leq \epsilon \right] \geq 1-\delta
 	\end{align*}
 \end{definition}
 
 \begin{remark}
 	If you haven't taken any higher level mathematics courses, it can be said, almost with certainty, that this is the most intimidating definition you have seen. The majority of this intimidation is due to the necessity to speak very carefully in definitions, not to assume or state things which may not necessarily be true. The idea hidden in the definition is however fairly intuitive.
 
-	NEEDS EXPLANATION.
+	If we think only of the name of the definition, we can gain some insight as to what we are trying to describe.
+	\begin{itemize}
+		\item \textbf{Correct}: the algorithm returns a hypothesis which is correct. That is, the risk of $ h_{\mathcal{S}} $ is zero.
+		\item \textbf{Approximately Correct}: the algorithm returns a hypothesis which is correct within some bound. That is, the risk of $ h_{\mathcal{S}} $ is less than some approximation parameter $ \epsilon $.
+		\item \textbf{Probably Approximately Correct}: the algorithm returns a hypothesis which is approximately correct with probability $ 1-\delta $ where $ \delta $ is a parameter quantifiying the probability.
+	\end{itemize}
+
+	So, as we make the restrictions on the quality of the returned hypothesis stricter, i.e., we decrease $ \epsilon $ to ensure that the hypothesis performs better on the problem, and we decrease $ \delta $ to ensure that we obtain a suitably learned hypothesis with greater probability, we have a function $ m_{\mathcal{H}} $ which will tell us how \textit{large} our training data set $ \mathcal{S} $ must be, in order to learn the problem according to our restrictions.
 \end{remark}
 
 \begin{proposition}
 	Every finite hypothesis class $ \mathcal{H} $ is $ \mathrm{PAC} $ learnable.
 \end{proposition}
 
+\section{Exercises}
+\subsection{Exercises \basic}
+\begin{exercise}
+	\begin{problem}
+	What are the elements of a statistical learning problem which the learner has access to?
+	\end{problem}
+	\begin{solution}
+		There are three elements of the problem which the learner has direct access to,
+		\begin{itemize}
+			\item Domain set
+			\item Label set
+			\item Training data
+		\end{itemize}
+	\end{solution}
+\end{exercise}
+
+\subsection{Exercises \intermediate}
+\subsection{Exercises \challenging}
 
