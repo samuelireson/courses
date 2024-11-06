@@ -59,7 +59,7 @@ We now have a good idea about the inputs, outputs and measures of success of a f
 
 It maybe initially seems obvious that we would like to minimise the risk, explicitly reducing the probability of incorrect classification, implicitly bringing our hypothesis output $ h $ closer to the true classifier $ f $. Although this is the right idea, we are the learner is limited by their knowledge of the problem. In particular, the learning knows nothing of the distribution $ \mathcal{D} $, nothing of the true classifier $ f $, and hence nothing of the risk $ L_{\mathcal{D}, f} $. As a result, we must construct a different quantity which we would like to minimise.
 
-\begin{definition}
+\begin{definition}[Empirical risk]
 	Given a training sequence $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, the \defined{empirical risk} with respect to $ \mathcal{S} $ is defined and denoted by,
 	\begin{align*}
 		L_{\mathcal{S}}( h ) := \frac{|\left\{ i \in \{ 1,...,m \}: h ( x_{i} ) \neq f ( x_{i} ) \right\}|}{m}
@@ -112,15 +112,15 @@ It is natural to ask how exactly a learner should go about limiting/defining a h
 \subsection{Assumptions on the learning problem}
 We are limiting the hypothesis space in order to prevent overfitting, but how can we be sure that this doesn't limit our ability to learn the problem. That is, how can we be sure that there is an $ \mathrm{ERM} $ hypothesis $ h $ contained in the limited space $ \mathcal{H} $. The short answer is that we can't, but we actually only want to consider situations where this is the case.
 
-\begin{definition}
-	The \defined{Realisability assumption} is the assumption that there exists $ h ^{*} \in \mathcal{H} $ such that $ L_{\mathcal{D}, f}( h ^{*} ) = 0 $. In particular, our hypothesis set $ \mathcal{H} $ contains a hypothesis which minimises the true risk.
+\begin{definition}[Realisability]
+	The \defined{realisability assumption} is the assumption that there exists $ h ^{*} \in \mathcal{H} $ such that $ L_{\mathcal{D}, f}( h ^{*} ) = 0 $. In particular, our hypothesis set $ \mathcal{H} $ contains a hypothesis which minimises the true risk.
 \end{definition}
 
 Under the realisability assumption, we know that $ L_{\mathcal{S}}( h ^{*} ) = 0 $, and furthermore know that every $ \mathrm{ERM} $ hypothesis is also such that $ L_{\mathcal{S}}( h_{\mathcal{S}} ) = 0 $.
 
 It is also important to mention an assumption we make on the training set $ \mathcal{S} $. Since the learner only has access to $ \mathcal{S} $, and we are interested in the true risk of the hypothesis $ h $, we must consider the relationship between $ \mathcal{S} $ and $ \mathcal{D} $.
 
-\begin{definition}
+\begin{definition}[Independent and identically distributed]
 	The \defined{i.i.d. assumption} is the assumption that the training set $ \mathcal{S} $ is constructed as a sequence of independent, and identically distributed examples according to the true distribution $ \mathcal{D} $. We denote this relationship by $ \mathcal{S} \sim \mathcal{D}^{m} $.
 \end{definition}
 
@@ -136,7 +136,7 @@ It is also important to mention an assumption we make on the training set $ \mat
 \end{remark}
 
 \section{PAC Learnability \challenging}
-\begin{definition}
+\begin{definition}[PAC learnability]
 	A hypothesis class $ \mathcal{H} $ is said to be \defined{Probably Approximately Correct (PAC) learnable} if there exists a function $ m_{\mathcal{H}}: ( 0,1 )^{2}\to \mathbb{N} $ and a learning algorithm $ \mathcal{A} $ that satisfy the following condition.
 
 	For every $ \epsilon, \delta \in ( 0,1 ) $, for every probability distribution $ \mathcal{D} $ over $ \mathcal{X} $, and for every labelling function $ f: \mathcal{X}\to \mathcal{Y} $, under the assumption of realisability, and with $ m \geq m_{\mathcal{H}}( \epsilon, \delta ) $,
@@ -146,7 +146,7 @@ It is also important to mention an assumption we make on the training set $ \mat
 \end{definition}
 
 \begin{remark}
-	If you haven't taken any higher level mathematics courses, it can be said, almost with certainty, that this is the most intimidating definition you have seen. The majority of the intimidation is down to verbose (necessarily) notation. The idea hidden in the definition is however fairly intuitive.
+	If you haven't taken any higher level mathematics courses, it can be said, almost with certainty, that this is the most intimidating definition you have seen. The majority of the intimidation is down to (necessarily) verbose notation. The idea hidden in the definition is however fairly intuitive.
 
 	If we think only of the name of the definition, we can gain some insight as to what we are trying to describe.
 	\begin{itemize}
