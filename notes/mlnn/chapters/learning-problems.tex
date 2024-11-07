@@ -1,4 +1,5 @@
 \chapter{Learning Problems}
+\chapterauthor{Samuel Ireson}
 
 \begin{chout}
 	We now aim to combine the concepts which we have thus far encountered, and construct a formal definition for a learning problem. We will begin by defining the necessary inputs, and the desired outputs, before working towards the fundamental definition of PAC learnability, which will allow us to have some notion of the possibility of learning a certain problem.
@@ -16,7 +17,7 @@ What information will be useful in this task? How will we determine if our solut
 The learner of a statistical learning problem has access to the following,
 \begin{itemize}
 	\item Domain set: an arbitrary set which we typically label by $ \mathcal{X} $. This set is nothing more than the objects to which we aim to assign labels. In the example outlined in the previous section, this set $ \mathcal{X} $ is the set of potential loanees.
-	\item Label set: A set which we typically label by $ \mathcal{Y} $. This is the set of possible labels, e.g., $ \{ \text{ default } , \text{ no default } \} $. Of course, it is more common to denote the possible labels simply by integers, and in our binary classification example, we will take $ \mathcal{Y}=\{ \pm1 \} $.
+	\item Label set: A set which we typically label by $ \mathcal{Y} $. This is the set of possible labels, e.g., $ \{ \text{default} , \text{no default} \} $. Of course, it is more common to denote the possible labels simply by integers, and in our binary classification example, we will take $ \mathcal{Y}=\{ \pm1 \} $.
 	\item Training data: a finite sequence of pairs $ ( x_{i}, y_{i} )\in \mathcal{X}\times \mathcal{Y} $, i.e., a sequence of labelled objects. In our case, this will be a sequence of past loaners together with information relating to their repayment. We will tend to denote the training data by $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, where $ m $ is the size of the training data.
 \end{itemize}
 
@@ -182,4 +183,3 @@ It is also important to mention an assumption we make on the training set $ \mat
 
 \subsection{Exercises \intermediate}
 \subsection{Exercises \challenging}
-
