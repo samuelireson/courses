@@ -2,7 +2,7 @@
 \documentclass[11pt]{report}
 
 \usepackage{graphicx}
-\graphicspath{ {./figures} }
+\graphicspath{ {./figures/} }
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -36,7 +36,7 @@
 \declaretheoremstyle[headfont=\sc, bodyfont=\normalfont, mdframed={ needspace=4\baselineskip, nobreak=false } ]{fullbox}
 \declaretheoremstyle[headfont=\sc, bodyfont=\normalfont, mdframed={ rightline=false, topline=false, bottomline=false, needspace=4\baselineskip, nobreak=false }]{sideline}
 
-\declaretheorem[numberwithin=chapter, style=fullbox, name=Definition]{definition}
+\declaretheorem[numberwithin=chapter, style=fullbox, name=Definition ]{definition}
 \declaretheorem[sibling=definition, style=fullbox, name=Corollary ]{corollary}
 \declaretheorem[sibling=definition, style=fullbox, name=Lemma ]{lemma}
 \declaretheorem[sibling=definition, style=fullbox, name=Proposition ]{proposition}
@@ -45,8 +45,8 @@
 \declaretheorem[sibling=definition, style=sideline, name=Nonexample ]{nonexample}
 \declaretheorem[style=sideline, numbered=no, name=Remark ]{remark}
 \declaretheorem[style=sideline, numbered=no, name=Notation ]{notation}
-\declaretheorem[numberwithin=chapter, style=fullbox, name=Problem]{problem}
-\declaretheorem[numberwithin=chapter, style=sideline, name=Solution]{solution}
+\declaretheorem[numberwithin=chapter, style=fullbox, name=Problem ]{problem}
+\declaretheorem[numberwithin=chapter, style=sideline, name=Solution ]{solution}
 
 % Exercise environment to be picked up by converter.
 \newenvironment{exercise}{}{}
@@ -70,4 +70,14 @@
 % Operators
 \let\diff\relax
 \DeclareMathOperator{\diff}{\, d\!}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 
+\makeatletter
+\newcommand{\chapterauthor}[1]{%
+	{\parindent0pt\vspace*{-15pt}%
+			\centering\linespread{1.1}\large\scshape Author --- #1%
+			\par\nobreak\vspace*{20pt}}
+	\@afterheading%
+}
+\makeatother

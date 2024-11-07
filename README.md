@@ -9,7 +9,3 @@ The folder containing the necessary code for the web view of the course notes.
 ## notes
 
 The folder containing the course notes which can be compiled to `.pdf` format.
-
-## cli
-
-The folder containing the courses cli. See the [README](cli/README.md) for more information.

@@ -25,6 +25,7 @@ export default defineConfig({
 					{ label: 'Multivariable Calculus', slug: 'mlnn/chapters/multivariable-calculus' },
 					{ label: 'Probability', slug: 'mlnn/chapters/probability' },
 					{ label: 'Learning Problems', slug: 'mlnn/chapters/learning-problems' },
+					{ label: 'Convex Learning Problems', slug: 'mlnn/chapters/convex-learning-problems' },
 					{ label: 'Optimisation', slug: 'mlnn/chapters/optimisation' },
 					{ label: 'Linear Regression', slug: 'mlnn/chapters/linear-regression' },
 					{ label: 'Logistic Regression', slug: 'mlnn/chapters/logistic-regression' },

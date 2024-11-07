@@ -36,3 +36,15 @@ main div.sl-container {
 	margin-inline: auto;
 	max-width: 1080px;
 }
+
+.sl-markdown-content img {
+	margin-inline: auto;
+	margin-top: 2rem;
+	width: 90%;
+	max-height: 320px;
+	filter: invert(1);
+}
+
+:root[data-theme='light'] .sl-markdown-content img {
+	filter: invert(0);
+}

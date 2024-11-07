@@ -1,0 +1,28 @@
+---
+title: Convex Learning Problems
+---
+import Aside from '@components/Aside/Aside.tsx';
+import Comments from '@components/Comments/Comments.tsx';
+import { Tabs, TabItem, LinkButton } from '@astrojs/starlight/components';
+
+<div style='display: flex; justify-content: space-around;'>
+	<LinkButton target="_blank" href="/courses/notes/mlnn/convex-learning-problems.pdf" variant="secondary" icon="document" >Download</LinkButton>
+	<LinkButton target="_blank" href="/courses/notes/mlnn/master.pdf" variant="primary" icon="open-book" >Download</LinkButton>
+</div>
+
+Another potential, and common way to limit the hypothesis space is to assert that it is convex. The following group of exercises will be concerned with this assertion.
+
+<Aside type='definition' title='Definition' name='[Convex set]'>
+	A set $ C $ is said to be <em> convex </em> if for every pair of points $ a,b \in C $, the following inclusion holds,
+	$$
+\begin{align*}
+		\{ \lambda a + (1- \lambda) b: \lambda \in [ 0,1 ] \} \subseteq C
+	\end{align*}
+$$
+</Aside>
+
+There is a good geometric intuition for this definition. In particular, the set which must be included in $ C $ describes the straight line from $ a $ to $ b $. So, a set $ C $ is convex if and only if it contains every straight line between any two points. See the figure below.
+	![convex-sets](../figures/convex-sets.svg)
+<div style='width: 80%; font-style: italic; margin-inline: auto;'>Caption: The set $ C $ is convex, but since we can find a line which is not contained in the set $ N $, this set is not convex. </div>
+
+
