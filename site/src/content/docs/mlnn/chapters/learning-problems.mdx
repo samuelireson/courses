@@ -10,9 +10,10 @@ import { Tabs, TabItem, LinkButton } from '@astrojs/starlight/components';
 	<LinkButton target="_blank" href="/courses/notes/mlnn/master.pdf" variant="primary" icon="open-book" >Download</LinkButton>
 </div>
 
-<div style='text-align: center'><em>
+
+<div style='text-align: center; font-style: italic;'>
 	We now aim to combine the concepts which we have thus far encountered, and construct a formal definition for a learning problem. We will begin by defining the necessary inputs, and the desired outputs, before working towards the fundamental definition of PAC learnability, which will allow us to have some notion of the possibility of learning a certain problem.
-</em></div>
+</div>
 
 ## Introduction
 We begin the chapter by laying out an example which we will reference and build around throughout.
@@ -26,7 +27,7 @@ What information will be useful in this task? How will we determine if our solut
 The learner of a statistical learning problem has access to the following,
 
 	- Domain set: an arbitrary set which we typically label by $ \mathcal{X} $. This set is nothing more than the objects to which we aim to assign labels. In the example outlined in the previous section, this set $ \mathcal{X} $ is the set of potential loanees.
-	- Label set: A set which we typically label by $ \mathcal{Y} $. This is the set of possible labels, e.g., $ \{ \text{ default } , \text{ no default } \} $. Of course, it is more common to denote the possible labels simply by integers, and in our binary classification example, we will take $ \mathcal{Y}=\{ \pm1 \} $.
+	- Label set: A set which we typically label by $ \mathcal{Y} $. This is the set of possible labels, e.g., $ \{ \text{default} , \text{no default} \} $. Of course, it is more common to denote the possible labels simply by integers, and in our binary classification example, we will take $ \mathcal{Y}=\{ \pm1 \} $.
 	- Training data: a finite sequence of pairs $ ( x_{i}, y_{i} )\in \mathcal{X}\times \mathcal{Y} $, i.e., a sequence of labelled objects. In our case, this will be a sequence of past loaners together with information relating to their repayment. We will tend to denote the training data by $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, where $ m $ is the size of the training data.
 
 
@@ -204,7 +205,6 @@ $$
 
 ### Exercises :badge[Intermediate]{variant=caution}
 ### Exercises :badge[Challenging]{variant=danger}
-
 <div style="margin-top: 10rem">
 [^schwartz]: <em> Understanding Machine Learning - from theory to algorithms </em> -- Shalev-Schwartz and Ben-David
 </div>
