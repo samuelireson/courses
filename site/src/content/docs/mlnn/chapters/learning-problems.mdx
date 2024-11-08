@@ -30,6 +30,10 @@ The learner of a statistical learning problem has access to the following,
 	- Label set: A set which we typically label by $ \mathcal{Y} $. This is the set of possible labels, e.g., $ \{ \text{default} , \text{no default} \} $. Of course, it is more common to denote the possible labels simply by integers, and in our binary classification example, we will take $ \mathcal{Y}=\{ \pm1 \} $.
 	- Training data: a finite sequence of pairs $ ( x_{i}, y_{i} )\in \mathcal{X}\times \mathcal{Y} $, i.e., a sequence of labelled objects. In our case, this will be a sequence of past loaners together with information relating to their repayment. We will tend to denote the training data by $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, where $ m $ is the size of the training data.
 
+	![learning-input](../figures/learning-input.svg)
+<div style='width: 80%; font-style: italic; margin-inline: auto;'>Caption: The training set $ \mathcal{S} $ is the collection of points in $ \mathcal{X} $ for which we have labels. The function $ f $ is the true labelling function. </div>
+
+
 
 <Aside type='comment' title='Remark' name=''>
 	It is important to note that the training data is described as a sequence rather than a set. This is a rather nuanced point, and not one which we will dedicate much thought to. The reason for such pedanticity is that there exist learning algorithms which are dependent on the order of the training points, and there is no necessity for $ \mathcal{S} $ to be duplicate free.
@@ -130,59 +134,8 @@ It is natural to ask how exactly a learner should go about limiting/defining a h
 	A natural way to limit the potential hypotheses is to limit the size of the hypothesis set. That is, we may impose a finiteness condition on $ \mathcal{H} $. We could let $ \mathcal{H} $ be the set of all predictors which can be implemented via python programs of at most $ 10^{32} $ characters. There are a number of other common examples.
 </Aside>
 
-### Assumptions on the learning problem
-We are limiting the hypothesis space in order to prevent overfitting, but how can we be sure that this doesn't limit our ability to learn the problem. That is, how can we be sure that there is an $ \mathrm{ERM} $ hypothesis $ h $ contained in the limited space $ \mathcal{H} $. The short answer is that we can't, but we actually only want to consider situations where this is the case.
-
-<Aside type='definition' title='Definition' name='[Realisability]'>
-	The <em> realisability assumption </em> is the assumption that there exists $ h ^{*} \in \mathcal{H} $ such that $ L_{\mathcal{D}, f}( h ^{*} ) = 0 $. In particular, our hypothesis set $ \mathcal{H} $ contains a hypothesis which minimises the true risk.
-</Aside>
-
-Under the realisability assumption, we know that $ L_{\mathcal{S}}( h ^{*} ) = 0 $, and furthermore know that every $ \mathrm{ERM} $ hypothesis is also such that $ L_{\mathcal{S}}( h_{\mathcal{S}} ) = 0 $.
-
-It is also important to mention an assumption we make on the training set $ \mathcal{S} $. Since the learner only has access to $ \mathcal{S} $, and we are interested in the true risk of the hypothesis $ h $, we must consider the relationship between $ \mathcal{S} $ and $ \mathcal{D} $.
-
-<Aside type='definition' title='Definition' name='[Independent and identically distributed]'>
-	The <em> i.i.d. assumption </em> is the assumption that the training set $ \mathcal{S} $ is constructed as a sequence of independent, and identically distributed examples according to the true distribution $ \mathcal{D} $. We denote this relationship by $ \mathcal{S} \sim \mathcal{D}^{m} $.
-</Aside>
-
 <Aside type='comment' title='Remark' name=''>
-	It is a useful exercise to track the randomness of our process.
-	
-		- The training set $ \mathcal{S} \sim \mathcal{D}^{m} $ is an $ m $-collection of randomly chosen i.i.d. examples labelled by $ f $.
-		- The hypothesis $ h_{\mathcal{S}} $ inherits this randomness since it is selected according to it's minimisation of $ L_{\mathcal{S}} $.
-		- The true risk of this hypothesis, $ L_{\mathcal{D}, f}( h_{\mathcal{S}} ) $ inherits this randomness from $ h_{\mathcal{S}} $.
-	
-
-	It is not reasonable to expect with certainty that the training sample $ \mathcal{S} $ will be representative of $ \mathcal{D} $, and as such we introduce a parameter $ \delta $, to quantify this uncertainty. Explicitly, $ \delta $ denotes the probability of attaining a non-representative sample $ \mathcal{S} $ from $ \mathcal{D} $.
-</Aside>
-
-## PAC Learnability :badge[Challenging]{variant=danger}
-<Aside type='definition' title='Definition' name='[PAC learnability]'>
-	A hypothesis class $ \mathcal{H} $ is said to be <em> Probably Approximately Correct (PAC) learnable </em> if there exists a function $ m_{\mathcal{H}}: ( 0,1 )^{2}\to \mathbb{N} $ and a learning algorithm $ \mathcal{A} $ that satisfy the following condition.
-
-	For every $ \epsilon, \delta \in ( 0,1 ) $, for every probability distribution $ \mathcal{D} $ over $ \mathcal{X} $, and for every labelling function $ f: \mathcal{X}\to \mathcal{Y} $, under the assumption of realisability, and with $ m \geq m_{\mathcal{H}}( \epsilon, \delta ) $,
-$$
-\begin{align*}
-		\mathbb{P}_{\mathcal{S}\sim \mathcal{D}^{m}}\left[ L_{\mathcal{D}, f}( h_{\mathcal{S}} )\leq \epsilon \right] \geq 1-\delta
-\end{align*}
-$$
-</Aside>
-
-<Aside type='comment' title='Remark' name=''>
-	If you haven't taken any higher level mathematics courses, it can be said, almost with certainty, that this is the most intimidating definition you have seen. The majority of the intimidation is down to (necessarily) verbose notation. The idea hidden in the definition is however fairly intuitive.
-
-	If we think only of the name of the definition, we can gain some insight as to what we are trying to describe.
-	
-		- <b> Correct </b>: the algorithm returns a hypothesis which is correct. That is, the risk of $ h_{\mathcal{S}} $ is zero.
-		- <b> Approximately Correct </b>: the algorithm returns a hypothesis which is correct within some bound. That is, the risk of $ h_{\mathcal{S}} $ is less than some approximation parameter $ \epsilon $.
-		- <b> Probably Approximately Correct </b>: the algorithm returns a hypothesis which is approximately correct with probability $ 1-\delta $ where $ \delta $ is a parameter quantifiying the probability.
-	
-
-	So, as we make the restrictions on the quality of the returned hypothesis stricter, i.e., we decrease $ \epsilon $ to ensure that the hypothesis performs better on the problem, and we decrease $ \delta $ to ensure that we obtain a suitably learned hypothesis with greater probability, we have a function $ m_{\mathcal{H}} $ which will tell us how <em> large </em> our training data set $ \mathcal{S} $ must be, in order to learn the problem according to our restrictions.
-</Aside>
-
-<Aside type='result' title='Proposition' name=''>
-	Every finite hypothesis class $ \mathcal{H} $ is $ \mathrm{PAC} $ learnable.
+	What is to say that this restriction solves the problem? There is a whole host of machinery needed in order to prove that this is the case, and for the sake of maintaining the introductory nature of this course, we decide to pass up on work in this direction. This is a very interesting topic, and those interested should read on <em> PAC learnability </em>.
 </Aside>
 
 ## Generalisation
