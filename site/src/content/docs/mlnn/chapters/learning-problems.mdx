@@ -20,7 +20,7 @@ We begin the chapter by laying out an example which we will reference and build 
 
 Suppose that you are a loaner, aiming to determine if an arbitrary loanee will or will not default on the loan you give them. We phrase the problem deliberately in this manner, to emphasize the simplistic scenario in which we are working -- the value of the loan is predetermined, and the goal is to provide a binary classification of loanees.
 
-What information will be useful in this task? How will we determine if our solution is adequate? How will be provide a useful notation to describe the problem?
+What information will be useful in this task? How will we determine if our solution is adequate? How will we provide a useful notation to describe the problem?
 
 ## A formal learning model :badge[Basic]{variant=success}
 ### Learning input
@@ -29,17 +29,19 @@ The learner of a statistical learning problem has access to the following,
 	- Domain set: an arbitrary set which we typically label by $ \mathcal{X} $. This set is nothing more than the objects to which we aim to assign labels. In the example outlined in the previous section, this set $ \mathcal{X} $ is the set of potential loanees.
 	- Label set: A set which we typically label by $ \mathcal{Y} $. This is the set of possible labels, e.g., $ \{ \text{default} , \text{no default} \} $. Of course, it is more common to denote the possible labels simply by integers, and in our binary classification example, we will take $ \mathcal{Y}=\{ \pm1 \} $.
 	- Training data: a finite sequence of pairs $ ( x_{i}, y_{i} )\in \mathcal{X}\times \mathcal{Y} $, i.e., a sequence of labelled objects. In our case, this will be a sequence of past loaners together with information relating to their repayment. We will tend to denote the training data by $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, where $ m $ is the size of the training data.
-
 	![learning-input](../figures/learning-input.svg)
 <div style='width: 80%; font-style: italic; margin-inline: auto;'>Caption: The training set $ \mathcal{S} $ is the collection of points in $ \mathcal{X} $ for which we have labels. The function $ f $ is the true labelling function. </div>
-
-
 
 <Aside type='comment' title='Remark' name=''>
 	It is important to note that the training data is described as a sequence rather than a set. This is a rather nuanced point, and not one which we will dedicate much thought to. The reason for such pedanticity is that there exist learning algorithms which are dependent on the order of the training points, and there is no necessity for $ \mathcal{S} $ to be duplicate free.
 
 	It is however still common to refer to $ \mathcal{S} $ as the training set.
 </Aside>
+
+<Aside type='comment' title='Notation' name=''>
+	What exactly are the objects $ x_{i} \in \mathcal{X} $? They are really descriptions of the objects which we are interested in -- that is they are vectors of features of the objects. In our example, each $ x $ could be a vector of information like the age, income, credit score etc., of the potential loanee.
+</Aside>
+
 
 ### Learning output
 
@@ -171,10 +173,8 @@ $$
 		
 	</TabItem>
 </Tabs>
-
 	![multi-classification](../figures/multi-classification.svg)
 <div style='width: 80%; font-style: italic; margin-inline: auto;'>Caption: We have multiple different classification possibilities. </div>
-
 
 
 ### Regression

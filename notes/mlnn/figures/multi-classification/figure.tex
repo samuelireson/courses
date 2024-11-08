@@ -5,23 +5,26 @@
 \usetikzlibrary{calc, positioning}
 \begin{document}
 \begin{tikzpicture}
-	\pgfmathsetseed{123}
+	\pgfmathsetseed{3}
 	\draw[rounded corners = 1.5cm] (-2,-2) -- (-2,2) -- (2,2) -- (2,-2) -- cycle;
 	\node (x1) at (2,1) {};
 	\node (x2) at (2,-1) {};
 	\node[below] at (current bounding box.north west) {$ \mathcal{X} $};
 
-	\foreach \x in {1,...,6} {
+	\def\shiftarray{{{-0.8,-0.8}, {-0.8,0.8}, {0.8,0.8}, {0.8,-0.8}}}
+
+	\foreach \x in {0,...,3} {
 			\pgfmathparse{rnd}
 			\edef\red{\pgfmathresult}
 			\pgfmathparse{rnd}
 			\edef\green{\pgfmathresult}
 			\pgfmathparse{rnd}
 			\edef\blue{\pgfmathresult}
-			\definecolor{groupColor}{rgb}{\red, \green, \blue}
-			\begin{scope}[shift={(rand, rand)}]
-				\foreach \x in {1,...,50}{
-						\filldraw[fill=groupColor] ({rnd*rand}, {rnd*rand}) circle (0.05);
+			\definecolor{groupcolor}{rgb}{\red, \green, \blue}
+
+			\begin{scope}[shift={({\shiftarray[\x][0]},{\shiftarray[\x][1]})}]
+				\foreach \x in {1,...,100}{
+						\filldraw[fill=groupcolor] ({rnd*rand}, {rnd*rand}) circle (0.05);
 					}
 			\end{scope}
 		}

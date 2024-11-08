@@ -10,7 +10,7 @@ We begin the chapter by laying out an example which we will reference and build 
 
 Suppose that you are a loaner, aiming to determine if an arbitrary loanee will or will not default on the loan you give them. We phrase the problem deliberately in this manner, to emphasize the simplistic scenario in which we are working -- the value of the loan is predetermined, and the goal is to provide a binary classification of loanees.
 
-What information will be useful in this task? How will we determine if our solution is adequate? How will be provide a useful notation to describe the problem?
+What information will be useful in this task? How will we determine if our solution is adequate? How will we provide a useful notation to describe the problem?
 
 \section{A formal learning model \basic}
 \subsection{Learning input}
@@ -23,18 +23,20 @@ The learner of a statistical learning problem has access to the following,
 
 \begin{figure}[!htb]
 	\centering
-
 	\includegraphics{learning-input/figure.pdf}
 	\caption{The training set $ \mathcal{S} $ is the collection of points in $ \mathcal{X} $ for which we have labels. The function $ f $ is the true labelling function.}
-
 \end{figure}
-
 
 \begin{remark}
 	It is important to note that the training data is described as a sequence rather than a set. This is a rather nuanced point, and not one which we will dedicate much thought to. The reason for such pedanticity is that there exist learning algorithms which are dependent on the order of the training points, and there is no necessity for $ \mathcal{S} $ to be duplicate free.
 
 	It is however still common to refer to $ \mathcal{S} $ as the training set.
 \end{remark}
+
+\begin{notation}
+	What exactly are the objects $ x_{i} \in \mathcal{X} $? They are really descriptions of the objects which we are interested in -- that is they are vectors of features of the objects. In our example, each $ x $ could be a vector of information like the age, income, credit score etc., of the potential loanee.
+\end{notation}
+
 
 \subsection{Learning output}
 \begin{itemize}
@@ -155,10 +157,8 @@ This is the most natural generalisation of the framework which we have explored.
 
 \begin{figure}[!htb]
 	\centering
-
 	\includegraphics{multi-classification/figure.pdf}
 	\caption{We have multiple different classification possibilities.}
-
 \end{figure}
 
 
