@@ -76,10 +76,10 @@ It maybe initially seems obvious that we would like to minimise the risk, explic
 
 <Aside type='definition' title='Definition' name='[Empirical risk]'>
 	Given a training sequence $ \mathcal{S} = ( ( x_{1}, y_{1} ), ..., ( x_{m}, y_{m} ) ) $, the <em> empirical risk </em> with respect to $ \mathcal{S} $ is defined and denoted by,
-	$$
+$$
 \begin{align*}
 		L_{\mathcal{S}}( h ) := \frac{|\left\{ i \in \{ 1,...,m \}: h ( x_{i} ) \neq f ( x_{i} ) \right\}|}{m}
-	\end{align*}
+\end{align*}
 $$
 </Aside>
 
@@ -94,13 +94,13 @@ We now explore a pitfall into which many learning algorithms fall, and one which
 	In order to illustrate overfitting in the $ \mathrm{ERM} $ paradigm, we suppose that the underlying distribution $ \mathcal{D} $ on loan applicants $ \mathcal{X} $ is uniform, that is, the correct classification of the feature space is half-half between default ($ 1 $) and non-default ($ -1 $).
 
 	It may seem initially that the process of finding an $ \mathrm{ERM} $ hypothesis is challenging, but this is not actually the case. We can find a scenario agnostic $ \mathrm{ERM} $ hypothesis,
-	$$
+$$
 \begin{align*}
 		h_{\mathcal{S}}( x ) = \begin{cases}
 			                       y_{i} & \text{ if } \exists i \in \{ 1,...,m \} \text{ s.t. } x_{i} = x \\
 			                       1     & \text{ otherwise }
 		                       \end{cases}
-	\end{align*}
+\end{align*}
 $$
 
 	What exactly is this hypothesis doing? If the selected data point $ x \in \mathcal{X} $ can be found in the training set $ \mathcal{S} $, then the hypothesis returns the label which is assigned to $ x $ in the training set. Otherwise, the hypothesis returns $ 1 $, i.e., predicts that the loanee will be good for their loan and won't default. This hypothesis $ h_{\mathcal{S}} $ is $ \mathrm{ERM} $ since is agrees exactly with the labels provided in the dataset, and hence has $ L_{\mathcal{S}}( h_{\mathcal{S}} ) = 0 $ -- there is zero probability of the hypothesis incorrectly classifying an instance of the training set. However, if the hypothesis returns $ -1 $ on only a finite number of instances, then $ L_{\mathcal{D}, f}( h_{\mathcal{S}} ) = 1/2 $.
@@ -161,10 +161,10 @@ It is also important to mention an assumption we make on the training set $ \mat
 	A hypothesis class $ \mathcal{H} $ is said to be <em> Probably Approximately Correct (PAC) learnable </em> if there exists a function $ m_{\mathcal{H}}: ( 0,1 )^{2}\to \mathbb{N} $ and a learning algorithm $ \mathcal{A} $ that satisfy the following condition.
 
 	For every $ \epsilon, \delta \in ( 0,1 ) $, for every probability distribution $ \mathcal{D} $ over $ \mathcal{X} $, and for every labelling function $ f: \mathcal{X}\to \mathcal{Y} $, under the assumption of realisability, and with $ m \geq m_{\mathcal{H}}( \epsilon, \delta ) $,
-	$$
+$$
 \begin{align*}
 		\mathbb{P}_{\mathcal{S}\sim \mathcal{D}^{m}}\left[ L_{\mathcal{D}, f}( h_{\mathcal{S}} )\leq \epsilon \right] \geq 1-\delta
-	\end{align*}
+\end{align*}
 $$
 </Aside>
 
@@ -184,6 +184,44 @@ $$
 <Aside type='result' title='Proposition' name=''>
 	Every finite hypothesis class $ \mathcal{H} $ is $ \mathrm{PAC} $ learnable.
 </Aside>
+
+## Generalisation
+There are many more types of learning problems which we would like to consider -- not everything can be as simple as a binary classification problem after all. We will now list some other common learning problems, and how they apply to the framework which we have laid out.
+
+### Multiclass classification
+This is the most natural generalisation of the framework which we have explored. We are now thinking of $ \mathcal{Y} = \{ 1,..., n \} $ where $ n $ is the number of classes which we may assign each $ x \in \mathcal{X} $ to. There are some small changes we need to make to the rest of the framework, particularly for the risk functions.
+
+<Tabs>
+	<TabItem label='Problem'>
+	Consider the example of document classification. Describe each part of the learning framework in this case.
+	</TabItem>
+	<TabItem label='Solution'>
+		
+			- Domain set: the collection of documents which we aim to classify. To be exact, each $ x \in \mathcal{X} $ is some multidimensional object which encodes the properties/features of the document which we would like to classify on. For example, $ x $ may contain information on the length of the document, key words, source of the document etc. Can you think of any other possible features?
+			- Label set: the possible labels which we will assign to the document. In this case, one possible label set is,
+$$
+\begin{align*}
+				      \mathcal{Y} = \{ \text{sport}, \text{news}, \text{science}, \text{finance} \}.
+\end{align*}
+$$
+			- Training data: this is the same as before.
+			- Learning output: this is the same as before.
+			- Measure of success: this is an interesting one. In some sense, it makes sense to consider the same risk function as before,
+$$
+\begin{align*}
+				      L_{\mathcal{D}, f}( h ) = \mathbb{P}_{x \sim \mathcal{D}}[ h ( x )\neq f ( x ) ].
+\end{align*}
+$$
+			      It shouldnt be automatically accepted as appropriate however. It is now possible that $ f $ and $ h $ disagree in <em> different </em> ways. In particular, it should be considered whether a misclassification of a finance document as a news document is <em> as </em> unsuccessful as the misclassification of a finance document as a sport document.
+
+			      In order to construct an alternative risk function, we need some measure of the proximity of two different classifications, and although this is beyond the scope of this introductory course, it is an interesting thing to ponder on.
+		
+	</TabItem>
+</Tabs>
+
+### Regression
+
+
 
 ## Exercises
 ### Exercises :badge[Basic]{variant=success}

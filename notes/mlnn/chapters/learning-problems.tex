@@ -163,6 +163,40 @@ It is also important to mention an assumption we make on the training set $ \mat
 	Every finite hypothesis class $ \mathcal{H} $ is $ \mathrm{PAC} $ learnable.
 \end{proposition}
 
+\section{Generalisation}
+There are many more types of learning problems which we would like to consider -- not everything can be as simple as a binary classification problem after all. We will now list some other common learning problems, and how they apply to the framework which we have laid out.
+
+\subsection{Multiclass classification}
+This is the most natural generalisation of the framework which we have explored. We are now thinking of $ \mathcal{Y} = \{ 1,..., n \} $ where $ n $ is the number of classes which we may assign each $ x \in \mathcal{X} $ to. There are some small changes we need to make to the rest of the framework, particularly for the risk functions.
+
+\begin{exercise}
+	\begin{problem}
+	Consider the example of document classification. Describe each part of the learning framework in this case.
+	\end{problem}
+	\begin{solution}
+		\begin{itemize}
+			\item Domain set: the collection of documents which we aim to classify. To be exact, each $ x \in \mathcal{X} $ is some multidimensional object which encodes the properties/features of the document which we would like to classify on. For example, $ x $ may contain information on the length of the document, key words, source of the document etc. Can you think of any other possible features?
+			\item Label set: the possible labels which we will assign to the document. In this case, one possible label set is,
+			      \begin{align*}
+				      \mathcal{Y} = \{ \text{sport}, \text{news}, \text{science}, \text{finance} \}.
+			      \end{align*}
+			\item Training data: this is the same as before.
+			\item Learning output: this is the same as before.
+			\item Measure of success: this is an interesting one. In some sense, it makes sense to consider the same risk function as before,
+			      \begin{align*}
+				      L_{\mathcal{D}, f}( h ) = \mathbb{P}_{x \sim \mathcal{D}}[ h ( x )\neq f ( x ) ].
+			      \end{align*}
+			      It shouldnt be automatically accepted as appropriate however. It is now possible that $ f $ and $ h $ disagree in \textit{different} ways. In particular, it should be considered whether a misclassification of a finance document as a news document is \textit{as} unsuccessful as the misclassification of a finance document as a sport document.
+
+			      In order to construct an alternative risk function, we need some measure of the proximity of two different classifications, and although this is beyond the scope of this introductory course, it is an interesting thing to ponder on.
+		\end{itemize}
+	\end{solution}
+\end{exercise}
+
+\subsection{Regression}
+
+
+
 \section{Exercises}
 \subsection{Exercises \basic}
 \begin{exercise}
